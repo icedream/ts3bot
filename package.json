@@ -1,0 +1,43 @@
+{
+	"name": "ts3bot",
+	"version": "0.2.0",
+	"description": "Allows running TeamSpeak3 as a bot for all kinds of media (local music/videos/streams/YouTube/...) without the need for a real GUI to exist.",
+	"main": "app.js",
+	"keywords": [
+		"teamspeak",
+		"teamspeak3",
+		"ts3",
+		"bot",
+		"ts3bot",
+		"teamspeak3bot",
+		"music",
+		"playback",
+		"audio",
+		"video",
+		"media",
+		"musicbot"
+	],
+	"author": "Carl Kittelberger <icedream2k9@die-optimisten.net>",
+	"license": "GPL-3.0+",
+	"dependencies": {
+		"express": "^4.13.3",
+		"iced-coffee-script": "^108.0.8",
+		"merge": "^1.2.0",
+		"mkdirp": "^0.5.1",
+		"nconf": "^0.7.2",
+		"npm-which": "^2.0.0",
+		"password-generator": "^2.0.1",
+		"querystring": "^0.2.0",
+		"request": "^2.61.0",
+		"simple-ini": "^1.0.3",
+		"sqlite3": "^3.1.0",
+		"stream-splitter": "^0.3.2",
+		"string.prototype.startswith": "^0.2.0",
+		"sync": "^0.2.5",
+		"valid-url": "^1.0.9",
+		"vlc-api": "0.0.0",
+		"which": "^1.1.2",
+		"winston": "^1.0.1",
+		"xvfb": "git://github.com/icedream/node-xvfb.git"
+	}
+}
