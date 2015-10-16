@@ -126,12 +126,13 @@ module.exports = class TS3ClientService extends services.Service
 			@query = new TS3ClientQuery "127.0.0.1", 25639
 			@_queryReconnectTimer = null
 			@query.on "error", (err) =>
-				if not @_requestedExit and @process and @process.connected
-					log.warn "Error in TS3 query connection, reconnecting..."
+				log.warn "Error in TS3 query connection", err
+			@query.on "close", =>
+				if not @_requestedExit
+					log.warn "Connection to TS3 client query interface lost, reconnecting..."
 					@_queryReconnectTimer = setTimeout @query.connect.bind(@query), 1000
 				else
-					log.warn "TS3 query connection terminated."
-			@query.on "close", => log.debug "Connection to TS3 client query interface lost."
+					log.debug "Connection to TS3 client query interface lost."
 			@query.on "open", => log.debug "Connected to TS3 client query interface."
 			@query.on "connecting", => log.debug "Connecting to TS3 client query interface..."
 
