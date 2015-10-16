@@ -232,7 +232,7 @@ module.exports = class TS3ClientService extends services.Service
 			[ "News", "NextCheck", new Date(now.getTime() + 1000 * 60 * 60 * 24 * 365).toISOString() ]
 			[ "Notifications", "SoundPack", "nosounds" ]
 			[ "Plugins", "teamspeak_control_plugin", "false" ]
-			[ "Plugins", "clientquery_plugin", "false" ]
+			[ "Plugins", "clientquery_plugin", "true" ]
 			[ "Plugins", "lua_plugin", "false" ]
 			[ "Plugins", "test_plugin", "false" ]
 			[ "Plugins", "ts3g15", "false" ]
