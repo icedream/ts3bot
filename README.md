@@ -6,7 +6,7 @@ This is the Docker image that contains everything necessary to run Icedream's TS
 
 ## Supported features
 
-- Thanks to VLC support for YouTube and direct livestreams
+- Thanks to youtube-dl support for YouTube, SoundCloud, hundreds of other video portals and direct livestreams
 - Takes commands from both channel and private messages
 - Can change nickname on the fly
 
@@ -51,7 +51,6 @@ The main repository for the source code of the bot is available at [https://gith
 
 ## Planned features
 
-- Improve support for video platforms (see issue [#1](https://github.com/icedream/ts3bot-docker/issues/1) and ts3bot-control issue [#4](https://github.com/icedream/ts3bot-control/issues/4))
 - Timestamping/skip intros (ts3bot-control issue [#3](https://github.com/icedream/ts3bot-control/issues/3))
 - Volume adjustment (ts3bot-control issue [#5](https://github.com/icedream/ts3bot-control/issues/5))
 - Playlisting (ts3bot-control issue [#2](https://github.com/icedream/ts3bot-control/issues/2))
