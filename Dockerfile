@@ -3,11 +3,12 @@ FROM phusion/passenger-nodejs:0.9.17
 # prepare APT with only the repositories we want
 RUN rm /etc/apt/sources.list.d/* &&\
 	add-apt-repository ppa:mc3man/trusty-media -y &&\
-	apt-get update &&\
+	DEBIAN_FRONTEND=noninteractive curl -sL https://deb.nodesource.com/setup_4.x | bash - &&\
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		nodejs \
 		blackbox xvfb xdotool \
 		pulseaudio pulseaudio-utils \
-		dbus \
+		dbus python-minimal \
 		vlc vlc-plugin-pulse
 
 # initialize DBus
