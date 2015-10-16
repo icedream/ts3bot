@@ -4,6 +4,7 @@ FROM phusion/passenger-nodejs:0.9.17
 RUN rm /etc/apt/sources.list.d/* &&\
 	DEBIAN_FRONTEND=noninteractive curl -sL https://deb.nodesource.com/setup_4.x | bash - &&\
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		nodejs \
 		blackbox xvfb xdotool \
 		pulseaudio pulseaudio-utils \
 		vlc-nox vlc-data vlc-plugin-pulse \
