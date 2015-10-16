@@ -31,7 +31,7 @@ module.exports = class VLCService extends services.Service
 					"--http-host", config.get("vlc-host"),
 					"--http-port", config.get("vlc-port"),
 					"--http-password", config.get("vlc-password")
-					"--aout=pulse",
+					"--aout", "pulse",
 					"--no-video"
 				],
 					stdio: ['ignore', 'pipe', 'pipe']
