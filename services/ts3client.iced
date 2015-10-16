@@ -225,7 +225,7 @@ module.exports = class TS3ClientService extends services.Service
 			[ "News", "NewsClosed", "1" ]
 			[ "News", "Language", "en" ]
 			[ "Plugins", "teamspeak_control_plugin", "false" ]
-			[ "Plugins", "clientquery_plugin", "true" ]
+			[ "Plugins", "clientquery_plugin", "false" ]
 			[ "Plugins", "lua_plugin", "false" ]
 			[ "Plugins", "test_plugin", "false" ]
 			[ "Plugins", "ts3g15", "false" ]
