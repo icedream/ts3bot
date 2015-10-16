@@ -13,11 +13,10 @@ StreamSplitter = require("stream-splitter")
 require_bin = require("../require_bin")
 
 ts3client_binpath = require_bin path.join(config.get("ts3-install-path"), "ts3client_linux_" + (if process.arch == "x64" then "amd64" else process.arch))
-if not path.exists
-	await fs.access ts3client_binpath, fs.R_OK | fs.X_OK, defer err
-	if err
-		log.fatal "Can't access TeamSpeak3 client binary at #{ts3client_binpath}, does the binary exist and have you given correct access?"
-		throw new Error "Access to TeamSpeak3 binary failed."
+await fs.access ts3client_binpath, fs.R_OK | fs.X_OK, defer err
+if err
+	log.fatal "Can't access TeamSpeak3 client binary at #{ts3client_binpath}, does the binary exist and have you given correct access?"
+	throw new Error "Access to TeamSpeak3 binary failed."
 
 module.exports = class TS3ClientService extends services.Service
 	dependencies: [
