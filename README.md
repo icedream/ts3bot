@@ -52,4 +52,5 @@ The main repository for the source code of the bot is available at [https://gith
 - Playlisting (issue [#2](https://github.com/icedream/ts3bot-control/issues/2))
 - Permission system (issue [#1](https://github.com/icedream/ts3bot-control/issues/1))
 - Command aliases to quickly reuse media
+- Show currently playing media metadata (issue [#7](https://github.com/icedream/ts3bot-control/issues/7))
 - Recording features
