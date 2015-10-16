@@ -224,6 +224,9 @@ module.exports = class TS3ClientService extends services.Service
 			[ "Misc", "LastShownNewsBrowserVersion", "4" ]
 			[ "News", "NewsClosed", "1" ]
 			[ "News", "Language", "en" ]
+			[ "News", "LastModified", (new Date()).toISOString() ]
+			[ "News", "NextCheck", (new Date() + 1000 * 60 * 60 * 24 * 360).toISOString() ]
+			[ "Notifications", "SoundPack", "nosounds" ]
 			[ "Plugins", "teamspeak_control_plugin", "false" ]
 			[ "Plugins", "clientquery_plugin", "false" ]
 			[ "Plugins", "lua_plugin", "false" ]
@@ -260,7 +263,6 @@ module.exports = class TS3ClientService extends services.Service
 				agc: if config.get("ts3-agc") then "true" else "false"
 				echo_reduction_db: 10
 				} ]
-			[ "Notifications", "SoundPack", "nosounds" ]
 			[ "Statistics", "ParticipateStatistics", "0" ]
 			[ "Statistics", "ConfirmedParticipation", "1" ]
 		], defer()
