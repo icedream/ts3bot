@@ -7,6 +7,7 @@ Socket = net.Socket
 getLogger = require "../logger"
 config = require "../config"
 log = getLogger "API"
+youtubedl = require "youtube-dl"
 #PulseAudio = require "pulseaudio"
 isValidUrl = (require "valid-url").isWebUri
 
@@ -60,14 +61,29 @@ module.exports = class APIService extends services.Service
 					log.warn "VLC API returned an error when trying to empty", err
 					return
 
-				await vlc.status.play input, defer(err)
+				# let's give youtube-dl a shot!
+				await youtubedl.getInfo input, [
+					"--format=bestaudio"
+				], defer(err, info)
+				if err or not info?
+					await youtubedl.getInfo input, [
+						"--format=best"
+					], defer(err, info)
+				if err or not info?
+					info =
+						url: input
+				if not info.url?
+					info.url = input
+					info.title = input # URL as title
+
+				await vlc.status.play info.url, defer(err)
 				if err
 					vlc.status.empty()
 					res.status(503).send("Something went wrong")
 					log.warn "VLC API returned an error when trying to play", err
 					return
 
-				res.send("OK")
+				res.send JSON.stringify info
 
 			app.get "/stop", (req, res) =>
 				if not req.query.uid
