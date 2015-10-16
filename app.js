@@ -31,7 +31,7 @@ doShutdownAsync = function(cb) {
 };
 
 process.on("uncaughtException", function(err) {
-	log.fatal("Shutting down due to an uncaught exception!", err);
+	log.error("Shutting down due to an uncaught exception!", err);
 	app.shutdownSync();
 });
 
