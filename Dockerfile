@@ -8,7 +8,7 @@ RUN rm /etc/apt/sources.list.d/* &&\
 		nodejs \
 		blackbox xvfb xdotool \
 		pulseaudio pulseaudio-utils \
-		dbus \
+		dbus python-minimal \
 		vlc vlc-plugin-pulse
 
 # initialize DBus
