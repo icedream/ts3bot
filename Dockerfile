@@ -33,7 +33,7 @@ RUN chmod +x ./ts3client.run &&\
 USER root
 
 # install the ts3bot-control app properly
-ENV TS3BOT_COMMIT ab3e66ae8f62cac5ecd9a752637085c1e3f597ae
+ENV TS3BOT_COMMIT 6d49bdfdaa1232b66df5ff70e884f137544a8a97
 ADD https://github.com/icedream/ts3bot-control/archive/${TS3BOT_COMMIT}.tar.gz /home/app/ts3bot-control.tgz
 WORKDIR /home/app
 RUN tar xvf ts3bot-control.tgz &&\
@@ -41,6 +41,10 @@ RUN tar xvf ts3bot-control.tgz &&\
 	mv ts3bot-control* ts3bot
 WORKDIR /home/app/ts3bot
 RUN npm install
+
+# install youtube-dl
+ADD https://yt-dl.org/latest/youtube-dl /usr/local/bin/youtube-dl
+RUN chmod a+rx /usr/local/bin/youtube-dl
 
 # initialize other configuration for daemons
 COPY etc/ /etc
