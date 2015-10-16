@@ -119,7 +119,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 
 			response = parseCmd token
 
-			@_log.silly "Recv:", response
+			@_log.silly "Recv:", token
 
 			if response.name
 				@emit "message.#{response.name}", response.args
@@ -148,7 +148,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 
 		text = buildCmd(cmd, namedArgs, positionalArgs)
 
-		@_log.silly "Send:", { cmd: cmd, namedArgs: namedArgs, positionalArgs: positionalArgs }
+		@_log.silly "Send:", text.trim()
 
 		@_tcpClient.write text, "utf8", () => cb?()
 
