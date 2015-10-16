@@ -19,13 +19,15 @@ This is the Docker image that contains everything necessary to run Icedream's TS
 1. You can pull the latest image via `docker pull icedream/ts3bot`.
 2. Create a folder, it will contain your configuration and your identity file that the bot uses to log in.
 3. Create a `config.json` in the configuration folder. A working example would be here:
-   ```json
-   {
-     "identity-path": "/config/identity.ini",
-     "ts3-server": "ts3server://<your.ts3.server>?port=<port>&password=<password>&channel=<channelpath>"
-   }
-   ```
-   Note that you can generate the URL for `ts3-server` using your TS3 client via Extras > Invite friend, select the checkbox "Channel" and select "ts3server link" as invitation type.
+   
+    ```json
+    {
+      "identity-path": "/config/identity.ini",
+      "ts3-server": "ts3server://<your.ts3.server>?port=<port>&password=<password>&channel=<channelpath>"
+    }
+    ```
+   
+    Note that you can generate the URL for `ts3-server` using your TS3 client via Extras > Invite friend, select the checkbox "Channel" and select "ts3server link" as invitation type.
 4. Generate an identity in your TeamSpeak3 client (Settings > Identities > Add), set the nickname to the nickname you want the bot to have and optionally increase the security level to the level needed for your bot to join the server.
 5. Export the identity you just generated via the "Export" button. Save it as `identity.ini` and put it into your configuration folder from earlier. You can now delete the identity from your TS3 client.
 6. Now set up a container with your configuration folder mounted at `/config`. The command for this would be: `docker run -d -v "<path to your config folder>:/config:ro" --cap-add SYS_NICE icedream/ts3bot`
