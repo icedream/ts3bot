@@ -1,6 +1,3 @@
 #!/bin/sh
 export XDG_RUNTIME_DIR="/tmp"
-exec /sbin/setuser app nodejs ~app/ts3bot/app.js --ts3-install-path=/home/app/ts3client || (
-	echo TS3Bot failed, waiting 10 seconds before restarting...
-	sleep 10
-)
+exec /sbin/setuser app nodejs ~app/ts3bot/app.js --ts3-install-path=/home/app/ts3client
