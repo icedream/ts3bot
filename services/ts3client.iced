@@ -35,7 +35,7 @@ module.exports = class TS3ClientService extends services.Service
 
 			await fs.access ts3client_binpath, fs.R_OK | fs.X_OK, defer err
 			if err
-				log.fatal "Can't access TeamSpeak3 client binary at #{ts3client_binpath}, does the binary exist and have you given correct access?"
+				log.error "Can't access TeamSpeak3 client binary at #{ts3client_binpath}, does the binary exist and have you given correct access?"
 				cb? new Error "Access to TeamSpeak3 binary failed."
 				return
 
