@@ -47,10 +47,10 @@ The main repository for the source code of the bot is available at [https://gith
 ## Planned features
 
 - Improve support for video platforms (see issue [#1](https://github.com/icedream/ts3bot-docker/issues/1) and ts3bot-control issue [#4](https://github.com/icedream/ts3bot-control/issues/4))
-- Timestamping/skip intros (issue [#3](https://github.com/icedream/ts3bot-control/issues/3))
-- Volume adjustment (issue [#5](https://github.com/icedream/ts3bot-control/issues/5))
-- Playlisting (issue [#2](https://github.com/icedream/ts3bot-control/issues/2))
-- Permission system (issue [#1](https://github.com/icedream/ts3bot-control/issues/1))
+- Timestamping/skip intros (ts3bot-control issue [#3](https://github.com/icedream/ts3bot-control/issues/3))
+- Volume adjustment (ts3bot-control issue [#5](https://github.com/icedream/ts3bot-control/issues/5))
+- Playlisting (ts3bot-control issue [#2](https://github.com/icedream/ts3bot-control/issues/2))
+- Permission system (ts3bot-control issue [#1](https://github.com/icedream/ts3bot-control/issues/1))
 - Command aliases to quickly reuse media
-- Show currently playing media metadata (issue [#7](https://github.com/icedream/ts3bot-control/issues/7))
+- Show currently playing media metadata (ts3bot-control issue [#7](https://github.com/icedream/ts3bot-control/issues/7))
 - Recording features
