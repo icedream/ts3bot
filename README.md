@@ -2,6 +2,8 @@
 
 This is the Docker image that contains everything necessary to run Icedream's TS3Bot. You only need to provide a configuration with an identity and off it goes!
 
+*This is currently still a project in early development, it basically works just fine as long as you don't try to do anything out of the ordinary to it. Let me know via the issue tracker if you find problems, errors or if you have questions!*
+
 ## Supported features
 
 - Thanks to VLC support for YouTube and direct livestreams
