@@ -211,6 +211,7 @@ module.exports = class TS3ClientService extends services.Service
 			[ "Chat", "IndicateChannelChats", "0" ]
 			[ "Chat", "IndicatePrivateChats", "0" ]
 			[ "Chat", "IndicateServerChats", "0" ]
+			[ "ClientLogView", "LogLevel", "000001" ]
 			[ "FileTransfer", "SimultaneousDownloads", "2" ]
 			[ "FileTransfer", "SimultaneousUploads", "2" ]
 			[ "FileTransfer", "UploadBandwidth", "0" ]
