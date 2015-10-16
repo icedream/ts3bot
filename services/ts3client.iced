@@ -201,6 +201,7 @@ module.exports = class TS3ClientService extends services.Service
 			identity.update()
 
 		# Some settings to help the TS3Bot to do what it's supposed to do
+		now = new Date()
 		await ts3settings.setMultiple [
 			[ "Application", "HotkeyMode", "2" ]
 			[ "Chat", "MaxLines", "1" ]
@@ -226,8 +227,8 @@ module.exports = class TS3ClientService extends services.Service
 			[ "Misc", "LastShownNewsBrowserVersion", "4" ]
 			[ "News", "NewsClosed", "1" ]
 			[ "News", "Language", "en" ]
-			[ "News", "LastModified", (new Date()).toISOString() ]
-			[ "News", "NextCheck", (new Date() + 1000 * 60 * 60 * 24 * 360).toISOString() ]
+			[ "News", "LastModified", now.toISOString() ]
+			[ "News", "NextCheck", new Date(now.getTime() + 1000 * 60 * 60 * 24 * 365).toISOString() ]
 			[ "Notifications", "SoundPack", "nosounds" ]
 			[ "Plugins", "teamspeak_control_plugin", "false" ]
 			[ "Plugins", "clientquery_plugin", "false" ]
