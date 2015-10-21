@@ -53,7 +53,6 @@ if err
 	await module.exports.shutdown defer()
 	process.exit 1
 vlc = services.find("vlc").instance
-vlc.status.volume 127 # that's 50% (about half of 0xFF)
 
 # TeamSpeak3
 ts3clientService = services.find("ts3client")
