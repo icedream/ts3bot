@@ -195,7 +195,7 @@ ts3clientService.on "started", (ts3proc) =>
 				if err
 					vlc.status.empty()
 					log.warn "VLC API returned an error when trying to play", err
-					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with that media. Maybe check the URL/sound name you provided?"
+					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with the specified media. Try checking the URL/path you provided?"
 					return
 
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Now playing [URL=#{input}]#{info.title}[/URL]."
@@ -204,15 +204,15 @@ ts3clientService.on "started", (ts3proc) =>
 				if err
 					vlc.status.empty()
 					log.warn "VLC API returned an error when trying to skip current song", err
-					ts3query.sendtextmessage args.targetmode, invoker.id, "This unfortunately didn't work out, I'm sorry."
+					ts3query.sendtextmessage args.targetmode, invoker.id, "This didn't work. Does the playlist have multiple songs?"
 					return
 
-				ts3query.sendtextmessage args.targetmode, invoker.id, "Going to the next playlist entry."
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Playing next song in the playlist."
 			when "enqueue", "add", "append"
 				inputBB = paramline
 
 				if inputBB.length <= 0
-					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]#{name}[/B] takes a URL as a parameter that should be appended to the playlist."
+					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]#{name} *url*[/B] - adds the specified URL to the current playlist"
 					return
 
 				input = removeBB paramline
@@ -249,7 +249,7 @@ ts3clientService.on "started", (ts3proc) =>
 				if err
 					vlc.status.empty()
 					log.warn "VLC API returned an error when trying to play", err
-					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with that media. Maybe check the URL/sound name you provided?"
+					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with the specified media. Try checking the URL/path you provided?"
 					return
 
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Added [URL=#{input}]#{info.title}[/URL] to the playlist."
@@ -263,7 +263,7 @@ ts3clientService.on "started", (ts3proc) =>
 				vol = parseInt paramline
 
 				if paramline.trim().length <= 0 or vol > 511 or vol < 0
-					ts3query.sendtextmessage args.targetmode, invoker.id, "The [b]vol[/b] command takes a number between 0 (0%) and 1024 (400%) to set the volume. 100% is 256. Defaults to 128 (50%) on startup."
+					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]vol *number*[/B] - takes a number between 0 (0%) and 1024 (400%) to set the volume. 100% is 256. Defaults to 128 (50%) on startup."
 					return
 
 				await vlc.status.volume paramline, defer(err)
