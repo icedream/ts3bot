@@ -8,6 +8,8 @@ request = require "request"
 fs = require("fs")
 path = require("path")
 qs = require "querystring"
+youtubedl = require "youtube-dl"
+isValidUrl = (require "valid-url").isWebUri
 
 log = getLogger "Main"
 
@@ -43,6 +45,14 @@ module.exports =
 await services.find("pulseaudio").start defer err
 if err
 	log.warn "PulseAudio could not start up, audio may not act as expected!"
+
+# VLC HTTP API
+await services.find("vlc").start defer err
+if err
+	log.warn "VLC could not start up!"
+	await module.exports.shutdown defer()
+	process.exit 1
+vlc = services.find("vlc").instance
 
 # TeamSpeak3
 ts3clientService = services.find("ts3client")
@@ -113,7 +123,7 @@ ts3clientService.on "started", (ts3proc) =>
 
 	ts3query.on "message.notifytextmessage", (args) =>
 		await ts3query.use args.schandlerid, defer(err, data)
-		
+
 		msg = args.msg
 		invoker = { name: args.invokername, uid: args.invokeruid, id: args.invokerid }
 		targetmode = args.targetmode # 1 = private, 2 = channel
@@ -135,39 +145,58 @@ ts3clientService.on "started", (ts3proc) =>
 
 		switch name.toLowerCase()
 			when "play"
-				q =
-					uid: invoker.uid
-					input: removeBB paramline
-				await request "http://127.0.0.1:16444/play?#{qs.stringify q}", defer(err, response)
-				switch response.statusCode
-					when 200 then ts3query.sendtextmessage args.targetmode, invoker.id, "Now playing #{paramline}."
-					when 400 then ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with what you wrote. Maybe check the URL/sound name you provided?"
-					when 403 then ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, you're not allowed to play #{q.input} via the bot."
-					else
-						log.warn "API reported error", response.statusCode, err
-						ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, an error occurred. Try again later."
+				inputBB = paramline
+				input = removeBB paramline
+
+				# only allow playback from file if it's a preconfigured alias
+				if isValidUrl input
+					log.debug "Got input URL:", input
+				else
+					input = config.get "aliases:#{input}"
+					if not(isValidUrl input) and not(fs.existsSync input)
+						log.debug "Got neither valid URL nor valid alias:", input
+						ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, you're not allowed to play #{inputBB} via the bot."
+						return
+
+				# TODO: permission system to check if uid is allowed to play this url or alias
+
+				await vlc.status.empty defer(err)
+				if err
+					log.warn "Couldn't empty VLC playlist", err
+					ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, an error occurred. Try again later."
+					return
+
+				# let's give youtube-dl a shot!
+				await youtubedl.getInfo input, [
+					"--format=bestaudio"
+				], defer(err, info)
+				if err or not info?
+					log.debug "There is no audio-only download for #{inputBB}, downloading full video instead."
+					await youtubedl.getInfo input, [
+						"--format=best"
+					], defer(err, info)
+				if err or not info?
+					info =
+						url: input
+				if not info.url?
+					info.url = input
+					info.title = input # URL as title
+
+				await vlc.status.play info.url, defer(err)
+				if err
+					vlc.status.empty()
+					log.warn "VLC API returned an error when trying to play", err
+					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with that media. Maybe check the URL/sound name you provided?"
+					return
+
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Now playing [URL=#{input}]#{info.title}[/URL]."
 			when "stop"
-				q =
-					uid: invoker.uid
-				await request "http://127.0.0.1:16444/stop?#{qs.stringify q}", defer(err, response)
-				switch response.statusCode
-					when 200 then ts3query.sendtextmessage args.targetmode, invoker.id, "Stopped playback."
-					when 403 then ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, you're not allowed to do that."
-					else
-						log.warn "API reported error", response.statusCode, err
-						ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, an error occurred. Try again later."
+				vlc.status.stop()
+				vlc.status.empty()
+
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Stopped playback."
 			when "setvolume"
-				q =
-					uid: invoker.uid
-					volume: parseFloat paramline
-				await request "http://127.0.0.1:16444/setvolume?#{qs.stringify q}", defer(err, response)
-				switch response.statusCode
-					when 200 then ts3query.sendtextmessage args.targetmode, invoker.id, "Set volume to #{q.volume}"
-					when 400 then ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with what you wrote. Maybe check the volume? It's supposed to be a floating-point number between 0 and 2."
-					when 403 then ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, you're not allowed to do that."
-					else
-						log.warn "API reported error", response.statusCode, err
-						ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, an error occurred. Try again later."
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, that's not implemented yet."
 			when "changenick"
 				nick = if paramline.length > params[0].length then paramline else params[0]
 				if nick.length < 1 or nick.length > 32
@@ -183,12 +212,5 @@ ts3clientService.on "started", (ts3proc) =>
 await ts3clientService.start [ config.get("ts3-server") ], defer(err, ts3proc)
 if err
 	log.error "TeamSpeak3 could not start, shutting down."
-	await module.exports.shutdown defer()
-	process.exit 1
-
-# HTTP API
-await services.find("api").start defer err
-if err
-	log.error "API could not start up, shutting down!"
 	await module.exports.shutdown defer()
 	process.exit 1

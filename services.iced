@@ -56,7 +56,6 @@ module.exports.Service = require "./service_template"
 
 # register services
 services = [
-	new(require "./services/api")
 	new(require "./services/pulseaudio")
 	new(require "./services/ts3client")
 	new(require "./services/vlc")
