@@ -1,7 +1,7 @@
 FROM phusion/passenger-nodejs:0.9.17
 
 # get rid of useless services
-RUN rm -r /etc/services/{cron,nginx,nginx-log-forwarder}
+RUN rm -r /etc/service/{cron,nginx,nginx-log-forwarder}
 
 # prepare APT with only the repositories we want
 RUN rm /etc/apt/sources.list.d/* &&\
