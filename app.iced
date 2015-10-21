@@ -53,6 +53,7 @@ if err
 	await module.exports.shutdown defer()
 	process.exit 1
 vlc = services.find("vlc").instance
+vlc.status.volume 127 # that's 50% (about half of 0xFF)
 
 # TeamSpeak3
 ts3clientService = services.find("ts3client")
@@ -196,8 +197,21 @@ ts3clientService.on "started", (ts3proc) =>
 				vlc.status.empty()
 
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Stopped playback."
-			when "setvolume"
-				ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, that's not implemented yet."
+			when "vol"
+				vol = parseInt paramline
+
+				if paramline.trim().length <= 0 or vol > 511 or vol < 0
+					ts3query.sendtextmessage args.targetmode, invoker.id, "The [b]vol[/b] command takes a number between 0 (0%) and 511 (200%) to set the volume. 100% is 127."
+					return
+
+				await vlc.status.volume paramline, defer(err)
+
+				if err
+					log.warn "Failed to set volume", err
+					ts3query.sendtextmessage args.targetmode, invoker.id, "That unfortunately didn't work out."
+					return
+
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Volume set."
 			when "changenick"
 				nick = if paramline.length > params[0].length then paramline else params[0]
 				if nick.length < 1 or nick.length > 32
