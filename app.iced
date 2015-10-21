@@ -146,8 +146,14 @@ ts3clientService.on "started", (ts3proc) =>
 
 		switch name.toLowerCase()
 			when "play"
-				inputBB = paramline
-				input = removeBB paramline
+				inputBB = paramline.trim()
+
+				# we gonna interpret play without a url as an attempt to unpause the current song
+				if inputBB.length <= 0
+					vlc.status.resume()
+					return
+
+				input = removeBB inputBB
 
 				# only allow playback from file if it's a preconfigured alias
 				if isValidUrl input
@@ -184,6 +190,55 @@ ts3clientService.on "started", (ts3proc) =>
 					info.title = input # URL as title
 
 				await vlc.status.play info.url, defer(err)
+				if err
+					vlc.status.empty()
+					log.warn "VLC API returned an error when trying to play", err
+					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with that media. Maybe check the URL/sound name you provided?"
+					return
+
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Now playing [URL=#{input}]#{info.title}[/URL]."
+			when "next"
+				await vlc.status.next defer(err)
+				if err
+					vlc.status.empty()
+					log.warn "VLC API returned an error when trying to skip current song", err
+					ts3query.sendtextmessage args.targetmode, invoker.id, "This unfortunately didn't work out, I'm sorry."
+					return
+
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Going to the next playlist entry."
+			when "enqueue"
+				inputBB = paramline
+				input = removeBB paramline
+
+				# only allow playback from file if it's a preconfigured alias
+				if isValidUrl input
+					log.debug "Got input URL:", input
+				else
+					input = config.get "aliases:#{input}"
+					if not(isValidUrl input) and not(fs.existsSync input)
+						log.debug "Got neither valid URL nor valid alias:", input
+						ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, you're not allowed to play #{inputBB} via the bot."
+						return
+
+				# TODO: permission system to check if uid is allowed to play this url or alias
+
+				# let's give youtube-dl a shot!
+				await youtubedl.getInfo input, [
+					"--format=bestaudio"
+				], defer(err, info)
+				if err or not info?
+					log.debug "There is no audio-only download for #{inputBB}, downloading full video instead."
+					await youtubedl.getInfo input, [
+						"--format=best"
+					], defer(err, info)
+				if err or not info?
+					info =
+						url: input
+				if not info.url?
+					info.url = input
+					info.title = input # URL as title
+
+				await vlc.status.enqueue info.url, defer(err)
 				if err
 					vlc.status.empty()
 					log.warn "VLC API returned an error when trying to play", err
