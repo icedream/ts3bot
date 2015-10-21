@@ -149,13 +149,12 @@ ts3clientService.on "started", (ts3proc) =>
 				return
 			when "play"
 				inputBB = paramline.trim()
+				input = (removeBB paramline).trim()
 
 				# we gonna interpret play without a url as an attempt to unpause the current song
-				if inputBB.length <= 0
+				if input.length <= 0
 					vlc.status.resume()
 					return
-
-				input = removeBB inputBB
 
 				# only allow playback from file if it's a preconfigured alias
 				if isValidUrl input
@@ -209,13 +208,12 @@ ts3clientService.on "started", (ts3proc) =>
 
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Playing next song in the playlist."
 			when "enqueue", "add", "append"
-				inputBB = paramline
+				inputBB = paramline.trim()
+				input = (removeBB paramline).trim()
 
 				if inputBB.length <= 0
 					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]#{name} <url>[/B] - Adds the specified URL to the current playlist"
 					return
-
-				input = removeBB paramline
 
 				# only allow playback from file if it's a preconfigured alias
 				if isValidUrl input
