@@ -37,7 +37,7 @@ RUN chmod +x ./ts3client.run &&\
 USER root
 
 # install the ts3bot-control app properly
-ENV TS3BOT_COMMIT 69b6deb9be2c1ca9f390059630c366d37a05e1d4
+ENV TS3BOT_COMMIT 1b57bd36ce7c65874b85485c582b131d605a1fa2
 ADD https://github.com/icedream/ts3bot-control/archive/${TS3BOT_COMMIT}.tar.gz /home/app/ts3bot-control.tgz
 WORKDIR /home/app
 RUN tar xvf ts3bot-control.tgz &&\
