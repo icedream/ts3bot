@@ -145,6 +145,9 @@ ts3clientService.on "started", (ts3proc) =>
 			params = []
 
 		switch name.toLowerCase()
+			when "pause"
+				vlc.status.pause()
+				return
 			when "play"
 				inputBB = paramline.trim()
 
