@@ -276,7 +276,7 @@ ts3clientService.on "started", (ts3proc) =>
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Volume set."
 			when "changenick"
 				nick = if paramline.length > params[0].length then paramline else params[0]
-				if nick.length < 1 or nick.length > 32
+				if nick.length < 3 or nick.length > 30
 					ts3query.sendtextmessage args.targetmode, invoker.id, "Invalid nickname."
 					return
 				Sync () =>
