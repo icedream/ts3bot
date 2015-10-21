@@ -209,7 +209,7 @@ ts3clientService.on "started", (ts3proc) =>
 					return
 
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Going to the next playlist entry."
-			when "enqueue"
+			when "enqueue", "add", "append"
 				inputBB = paramline
 				input = removeBB paramline
 
