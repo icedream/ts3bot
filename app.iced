@@ -211,6 +211,11 @@ ts3clientService.on "started", (ts3proc) =>
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Going to the next playlist entry."
 			when "enqueue", "add", "append"
 				inputBB = paramline
+
+				if inputBB.length <= 0
+					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]#{name}[/B] takes a URL as a parameter that should be appended to the playlist."
+					return
+
 				input = removeBB paramline
 
 				# only allow playback from file if it's a preconfigured alias
