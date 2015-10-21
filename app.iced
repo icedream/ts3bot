@@ -191,7 +191,8 @@ ts3clientService.on "started", (ts3proc) =>
 
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Now playing [URL=#{input}]#{info.title}[/URL]."
 			when "stop"
-				vlc.status.stop()
+				await vlc.status.stop defer(err)
+
 				vlc.status.empty()
 
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Stopped playback."
