@@ -212,7 +212,7 @@ ts3clientService.on "started", (ts3proc) =>
 				inputBB = paramline
 
 				if inputBB.length <= 0
-					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]#{name} *url*[/B] - adds the specified URL to the current playlist"
+					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]#{name} <url>[/B] - Adds the specified URL to the current playlist"
 					return
 
 				input = removeBB paramline
@@ -263,7 +263,7 @@ ts3clientService.on "started", (ts3proc) =>
 				vol = parseInt paramline
 
 				if paramline.trim().length <= 0 or vol > 511 or vol < 0
-					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]vol *number*[/B] - takes a number between 0 (0%) and 1024 (400%) to set the volume. 100% is 256. Defaults to 128 (50%) on startup."
+					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]vol <number>[/B] - takes a number between 0 (0%) and 1024 (400%) to set the volume. 100% is 256. Defaults to 128 (50%) on startup."
 					return
 
 				await vlc.status.volume paramline, defer(err)
