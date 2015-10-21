@@ -252,7 +252,7 @@ ts3clientService.on "started", (ts3proc) =>
 					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with that media. Maybe check the URL/sound name you provided?"
 					return
 
-				ts3query.sendtextmessage args.targetmode, invoker.id, "Now playing [URL=#{input}]#{info.title}[/URL]."
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Added [URL=#{input}]#{info.title}[/URL] to the playlist."
 			when "stop"
 				await vlc.status.stop defer(err)
 
@@ -263,7 +263,7 @@ ts3clientService.on "started", (ts3proc) =>
 				vol = parseInt paramline
 
 				if paramline.trim().length <= 0 or vol > 511 or vol < 0
-					ts3query.sendtextmessage args.targetmode, invoker.id, "The [b]vol[/b] command takes a number between 0 (0%) and 511 (200%) to set the volume. 100% is 127."
+					ts3query.sendtextmessage args.targetmode, invoker.id, "The [b]vol[/b] command takes a number between 0 (0%) and 1024 (400%) to set the volume. 100% is 256. Defaults to 128 (50%) on startup."
 					return
 
 				await vlc.status.volume paramline, defer(err)
