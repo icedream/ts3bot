@@ -27,7 +27,7 @@ RUN mkdir -p /config &&\
 # install teamspeak3
 # Original comment that used to be here: temporary non-interactive teamspeak3 install hack, remove before publishing!!
 # In fact, it would be nice if we had some lazy handling code for this that just requires the user to provide a "--agree-with-license" once.
-ENV TS3CLIENT_VERSION 3.0.18.1
+ENV TS3CLIENT_VERSION 3.0.18.2
 ADD http://dl.4players.de/ts/releases/${TS3CLIENT_VERSION}/TeamSpeak3-Client-linux_amd64-${TS3CLIENT_VERSION}.run /home/app/ts3client.run
 WORKDIR /home/app
 RUN chmod +x ./ts3client.run &&\
