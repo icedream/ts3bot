@@ -53,6 +53,6 @@ mv ts3bot-control* ts3bot
 #RUN chmod a+rx /usr/local/bin/youtube-dl
 
 # Clean up APT
-apt-get autoremove --purge wget
+apt-get autoremove -y --purge wget
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
