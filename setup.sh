@@ -16,7 +16,7 @@ curl -sL https://deb.nodesource.com/setup_4.x | bash -
 
 # Now install all packages we need
 apt-get install -y --no-install-recommends \
-	nodejs \
+	nodejs wget ca-certificates \
 	blackbox xvfb xdotool \
 	pulseaudio pulseaudio-utils \
 	dbus \
@@ -54,5 +54,6 @@ mv ts3bot-control* ts3bot
 #RUN chmod a+rx /usr/local/bin/youtube-dl
 
 # Clean up APT
+apt-get autoremove --purge wget
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
