@@ -43,9 +43,8 @@ sed -i 's/^MS_PrintLicense$/#MS_PrintLicense/g' ./ts3client.run
 rm ./ts3client.run
 
 # Install TS3Bot
-wget https://github.com/icedream/ts3bot-control/archive/${TS3BOT_COMMIT}.tar.gz -Ots3bot-control.tgz
-/sbin/setuser app tar xvf ts3bot-control.tgz
-rm ts3bot-control.tgz
+wget https://github.com/icedream/ts3bot-control/archive/${TS3BOT_COMMIT}.tar.gz -O- |\
+	/sbin/setuser app tar xzv
 mv ts3bot-control* ts3bot
 (cd ts3bot && /sbin/setuser app npm install)
 
