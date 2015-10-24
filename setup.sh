@@ -12,11 +12,10 @@ rm -r /etc/service/cron /etc/service/nginx /etc/service/nginx-log-forwarder
 # Set up APT sources
 rm /etc/apt/sources.list.d/*
 add-apt-repository ppa:mc3man/trusty-media -y
-curl -sL https://deb.nodesource.com/setup_4.x | bash -
 
 # Now install all packages we need
 apt-get install -y --no-install-recommends \
-	nodejs wget ca-certificates \
+	wget ca-certificates \
 	blackbox xvfb xdotool \
 	pulseaudio pulseaudio-utils \
 	dbus \
