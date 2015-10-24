@@ -14,6 +14,7 @@ rm /etc/apt/sources.list.d/*
 add-apt-repository ppa:mc3man/trusty-media -y
 
 # Now install all packages we need
+apt-get update
 apt-get install -y --no-install-recommends \
 	wget ca-certificates \
 	blackbox xvfb xdotool \
