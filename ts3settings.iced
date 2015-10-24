@@ -211,10 +211,10 @@ module.exports = class SettingsFile
 			select: () ->
 				settingsObj.defaultIdentity = @id
 			update: () ->
-				settingsObj.silly "Requested update of #{id.id}"
+				settingsObj.log.silly "Requested update of #{id.id}"
 				for own index, identity of settingsObj.identities
 					if identity.id == id.id
-						settingsObj.silly "Updating identity #{id.id}"
+						settingsObj.log.silly "Updating identity #{id.id}"
 						settingsObj.identities[index] = merge identity, id
 						return
 			remove: () ->
