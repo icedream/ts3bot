@@ -40,6 +40,7 @@
     "sync": "^0.2.5",
     "valid-url": "^1.0.9",
     "vlc-api": "0.0.0",
+    "webchimera.js": "^0.1.38",
     "which": "^1.1.2",
     "winston": "^1.0.1",
     "xvfb": "git://github.com/icedream/node-xvfb.git",
