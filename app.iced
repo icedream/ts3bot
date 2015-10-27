@@ -205,6 +205,9 @@ ts3clientService.on "started", (ts3proc) =>
 
 				# play it in VLC
 				vlc.play info.url
+			when "stop-after"
+				vlc.playlist.mode = vlc.playlist.Single
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Playback will stop after the current playlist item."
 			when "loop"
 				inputBB = paramline
 				input = null
