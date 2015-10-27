@@ -227,11 +227,17 @@ ts3clientService.on "started", (ts3proc) =>
 						ts3query.sendtextmessage args.targetmode, invoker.id, "[B]#{name} on|off[/B] - Turns playlist looping on or off"
 						return
 			when "next"
+				if vlc.playlist.items.count == 0
+					ts3query.sendtextmessage args.targetmode, invoker.id, "The playlist is empty."
+					return
 				if vlc.playlist.mode != vlc.playlist.Loop and vlc.playlist.currentItem == vlc.playlist.items.count - 1
 					ts3query.sendtextmessage args.targetmode, invoker.id, "Can't jump to next playlist item, this is the last one!"
 					return
 				vlc.playlist.next()
 			when "prev", "previous"
+				if vlc.playlist.items.count == 0
+					ts3query.sendtextmessage args.targetmode, invoker.id, "The playlist is empty."
+					return
 				if vlc.playlist.mode != vlc.playlist.Loop and vlc.playlist.currentItem <= 0
 					ts3query.sendtextmessage args.targetmode, invoker.id, "Can't jump to previous playlist item, this is the first one!"
 					return
