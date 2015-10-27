@@ -233,19 +233,6 @@ ts3clientService.on "started", (ts3proc) =>
 			when "empty", "clear"
 				vlc.playlist.clear()
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Cleared the playlist."
-			###
-			when "list", "playlist"
-				message = "Currently there are #{vlc.playlist.items.count} tracks are in the playlist"
-				message += if vlc.playlist.items.count > 0 then ":\n" else "."
-				for i in [ 0 ... vlc.playlist.items.count ]
-					if vlc.playlist.currentItem == i
-						message += "[COLOR=green][B]"
-					info = vlcMediaInfo[vlc.playlist.items[i].mrl]
-					message += "#{i + 1}. [URL=#{info.originalUrl}]#{info.title}[/URL]"
-					if vlc.playlist.currentItem == i
-						message += "[/B][/COLOR]"
-				ts3query.sendtextmessage args.targetmode, invoker.id, message
-			###
 			when "enqueue", "add", "append"
 				inputBB = paramline.trim()
 				input = (removeBB paramline).trim()
