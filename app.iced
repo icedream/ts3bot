@@ -64,15 +64,15 @@ ts3clientService.on "started", (ts3proc) =>
 	ts3query = ts3clientService.query
 
 	# VLC event handling
-	vlc.onPlaying () =>
+	vlc.onPlaying = () =>
 		info = vlcMediaInfo[vlc.playlist.items[vlc.playlist.currentItem].mrl]
 		ts3query.sendtextmessage 2, 0, "Now playing [URL=#{info.originalUrl}]#{info.title}[/URL]."
-	vlc.onPaused () => ts3query.sendtextmessage 2, 0, "Paused."
-	vlc.onForward () => ts3query.sendtextmessage 2, 0, "Fast-forwarding..."
-	vlc.onBackward () => ts3query.sendtextmessage 2, 0, "Rewinding..."
-	vlc.onEncounteredError () => log.error "VLC has encountered an error! You will need to restart the bot.", arguments
-	vlc.onEndReached () => ts3query.sendtextmessage 2, 0, "End of playlist reached."
-	vlc.onStopped () => ts3query.sendtextmessage 2, 0, "Stopped."
+	vlc.onPaused = () => ts3query.sendtextmessage 2, 0, "Paused."
+	vlc.onForward = () => ts3query.sendtextmessage 2, 0, "Fast-forwarding..."
+	vlc.onBackward = () => ts3query.sendtextmessage 2, 0, "Rewinding..."
+	vlc.onEncounteredError = () => log.error "VLC has encountered an error! You will need to restart the bot.", arguments
+	vlc.onEndReached = () => ts3query.sendtextmessage 2, 0, "End of playlist reached."
+	vlc.onStopped = () => ts3query.sendtextmessage 2, 0, "Stopped."
 
 	ts3query.currentScHandlerID = 1
 	ts3query.mydata = {}
