@@ -20,6 +20,7 @@ apt-get install -y --no-install-recommends \
 	blackbox xvfb xdotool \
 	pulseaudio pulseaudio-utils \
 	dbus \
+	cmake cmake-data \
 	python python-minimal python-pkg-resources rtmpdump ffmpeg \
 	vlc vlc-plugin-pulse
 
@@ -46,13 +47,15 @@ rm ./ts3client.run
 wget https://github.com/icedream/ts3bot-control/archive/${TS3BOT_COMMIT}.tar.gz -O- |\
 	/sbin/setuser app tar xzv
 mv ts3bot-control* ts3bot
-(cd ts3bot && /sbin/setuser app npm install)
+(cd ts3bot && \
+	npm_config_wcjs_runtime_version="$(nodejs --version | tr -d 'v')" \
+		/sbin/setuser app npm install)
 
 # Install youtube-dl (actually done by npm already in a non-system-wide way)
 #ADD https://yt-dl.org/latest/youtube-dl /usr/local/bin/youtube-dl
 #RUN chmod a+rx /usr/local/bin/youtube-dl
 
 # Clean up APT
-apt-get autoremove -y --purge wget
+apt-get autoremove -y --purge wget cmake cmake-data
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
