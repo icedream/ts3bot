@@ -71,7 +71,6 @@ ts3clientService.on "started", (ts3proc) =>
 	vlc.onForward = () => ts3query.sendtextmessage 2, 0, "Fast-forwarding..."
 	vlc.onBackward = () => ts3query.sendtextmessage 2, 0, "Rewinding..."
 	vlc.onEncounteredError = () => log.error "VLC has encountered an error! You will need to restart the bot.", arguments
-	vlc.onEndReached = () => ts3query.sendtextmessage 2, 0, "End of playlist reached."
 	vlc.onStopped = () => ts3query.sendtextmessage 2, 0, "Stopped."
 
 	ts3query.currentScHandlerID = 1
