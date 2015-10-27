@@ -207,6 +207,8 @@ ts3clientService.on "started", (ts3proc) =>
 				vlc.play info.url
 			when "next"
 				vlc.playlist.next()
+			when "prev", "previous"
+				vlc.playlist.prev()
 			when "enqueue", "add", "append"
 				inputBB = paramline.trim()
 				input = (removeBB paramline).trim()
