@@ -214,7 +214,7 @@ ts3clientService.on "started", (ts3proc) =>
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Cleared the playlist."
 			when "list", "playlist"
 				message = "Currently these tracks are in the playlist:\n"
-				for i in [ 0 .. vlc.playlist.items.count ]
+				for i in [ 1 .. vlc.playlist.items.count ]
 					if vlc.playlist.currentItem == i
 						message += "[COLOR=green][B]"
 					info = vlcMediaInfo[vlc.playlist.items[i].mrl]
