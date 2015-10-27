@@ -1,88 +1,43 @@
 spawn = require("child_process").spawn
 services = require("../services")
 config = require("../config")
-VLCApi = require("vlc-api")
+wc = require("webchimera.js")
 StreamSplitter = require("stream-splitter")
-require_bin = require("../require_bin")
-
-vlcBinPath = require_bin "vlc"
 
 module.exports = class VLCService extends services.Service
 	dependencies: [
 		"pulseaudio"
 	]
 	constructor: -> super "VLC",
+		###
+		# Starts an instance of VLC and keeps it ready for service.
+		###
 		start: (cb) ->
-			if @_process
-				cb? null, @_process
+			if @_instance
+				cb? null, @_instance
 				return
 
 			calledCallback = false
 
-			proc = null
-			doStart = null
-			doStart = () =>
-				await services.find("pulseaudio").start defer(err)
-				if err
-					throw new Error "Dependency pulseaudio failed."
+			instance = wc.createPlayer [
+				"--aout", "pulse",
+				"--no-video"
+			]
+			instance.audio.volume = 50
 
-				proc = spawn vlcBinPath, [
-					"-I", "http",
-					"--http-host", config.get("vlc-host"),
-					"--http-port", config.get("vlc-port"),
-					"--http-password", config.get("vlc-password")
-					"--aout", "pulse",
-					"--volume", "128", # 50% volume
-					"--no-video"
-				],
-					stdio: ['ignore', 'pipe', 'pipe']
-					detached: true
+			@_instance = instance
+			cb? null, @_instance
 
-				# logging
-				stdoutTokenizer = proc.stdout.pipe StreamSplitter "\n"
-				stdoutTokenizer.encoding = "utf8";
-				stdoutTokenizer.on "token", (token) =>
-					token = token.trim() # get rid of \r
-					@log.debug token
-
-				stderrTokenizer = proc.stderr.pipe StreamSplitter "\n"
-				stderrTokenizer.encoding = "utf8";
-				stderrTokenizer.on "token", (token) =>
-					token = token.trim() # get rid of \r
-					@log.debug token
-
-				proc.on "exit", () =>
-					if @state == "stopping"
-						return
-					if not calledCallback
-						calledCallback = true
-						@log.warn "VLC terminated unexpectedly during startup."
-						cb? new Error "VLC terminated unexpectedly."
-					@log.warn "VLC terminated unexpectedly, restarting."
-					doStart()
-
-				@_process = proc
-
-			doStart()
-
-			setTimeout (() =>
-				if not calledCallback
-					calledCallback = true
-
-					@instance = new VLCApi
-						host: ":#{encodeURIComponent config.get("vlc-password")}@#{config.get("vlc-host")}",
-						port: config.get("vlc-port")
-					cb? null, @instance), 1500 # TODO: Use some more stable condition
-
+		###
+		# Shuts down the VLC instance.
+		###
 		stop: (cb) ->
-			if not @_process
+			if not @_instance
 				cb?()
 				return
 
-			@instance = null
-
-			@_process.kill()
-			await @_process.once "exit", defer()
+			# TODO: Is there even a proper way to shut this down?
+			@_instance = null
 
 			cb?()
 

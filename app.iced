@@ -46,19 +46,33 @@ await services.find("pulseaudio").start defer err
 if err
 	log.warn "PulseAudio could not start up, audio may not act as expected!"
 
-# VLC HTTP API
-await services.find("vlc").start defer err
+# VLC via WebChimera.js
+vlcService = services.find("vlc")
+await vlcService.start defer err, vlc
 if err
 	log.warn "VLC could not start up!"
 	await module.exports.shutdown defer()
 	process.exit 1
-vlc = services.find("vlc").instance
+
+# Cached information for tracks in playlist
+vlcMediaInfo = {}
 
 # TeamSpeak3
 ts3clientService = services.find("ts3client")
 
 ts3clientService.on "started", (ts3proc) =>
 	ts3query = ts3clientService.query
+
+	# VLC event handling
+	vlc.onPlaying () =>
+		info = vlcMediaInfo[vlc.playlist.items[vlc.playlist.currentItem].mrl]
+		ts3query.sendtextmessage 2, 0, "Now playing [URL=#{info.originalUrl}]#{info.title}[/URL]."
+	vlc.onPaused () => ts3query.sendtextmessage 2, 0, "Paused."
+	vlc.onForward () => ts3query.sendtextmessage 2, 0, "Fast-forwarding..."
+	vlc.onBackward () => ts3query.sendtextmessage 2, 0, "Rewinding..."
+	vlc.onEncounteredError () => log.error "VLC has encountered an error! You will need to restart the bot.", arguments
+	vlc.onEndReached () => ts3query.sendtextmessage 2, 0, "End of playlist reached."
+	vlc.onStopped () => ts3query.sendtextmessage 2, 0, "Stopped."
 
 	ts3query.currentScHandlerID = 1
 	ts3query.mydata = {}
@@ -145,7 +159,8 @@ ts3clientService.on "started", (ts3proc) =>
 
 		switch name.toLowerCase()
 			when "pause"
-				vlc.status.pause()
+				# now we can toggle-pause playback this easily! yay!
+				vlc.togglePause()
 				return
 			when "play"
 				inputBB = paramline.trim()
@@ -153,7 +168,7 @@ ts3clientService.on "started", (ts3proc) =>
 
 				# we gonna interpret play without a url as an attempt to unpause the current song
 				if input.length <= 0
-					vlc.status.resume()
+					vlc.play()
 					return
 
 				# only allow playback from file if it's a preconfigured alias
@@ -168,11 +183,7 @@ ts3clientService.on "started", (ts3proc) =>
 
 				# TODO: permission system to check if uid is allowed to play this url or alias
 
-				await vlc.status.empty defer(err)
-				if err
-					log.warn "Couldn't empty VLC playlist", err
-					ts3query.sendtextmessage args.targetmode, invoker.id, "Sorry, an error occurred. Try again later."
-					return
+				vlc.playlist.clear()
 
 				# let's give youtube-dl a shot!
 				await youtubedl.getInfo input, [
@@ -189,24 +200,13 @@ ts3clientService.on "started", (ts3proc) =>
 				if not info.url?
 					info.url = input
 					info.title = input # URL as title
+				info.originalUrl = input
+				vlcMediaInfo[info.url] = info
 
-				await vlc.status.play info.url, defer(err)
-				if err
-					vlc.status.empty()
-					log.warn "VLC API returned an error when trying to play", err
-					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with the specified media. Try checking the URL/path you provided?"
-					return
-
-				ts3query.sendtextmessage args.targetmode, invoker.id, "Now playing [URL=#{input}]#{info.title}[/URL]."
+				# play it in VLC
+				vlc.play info.url
 			when "next"
-				await vlc.status.next defer(err)
-				if err
-					vlc.status.empty()
-					log.warn "VLC API returned an error when trying to skip current song", err
-					ts3query.sendtextmessage args.targetmode, invoker.id, "This didn't work. Does the playlist have multiple songs?"
-					return
-
-				ts3query.sendtextmessage args.targetmode, invoker.id, "Playing next song in the playlist."
+				vlc.playlist.next()
 			when "enqueue", "add", "append"
 				inputBB = paramline.trim()
 				input = (removeBB paramline).trim()
@@ -242,36 +242,25 @@ ts3clientService.on "started", (ts3proc) =>
 				if not info.url?
 					info.url = input
 					info.title = input # URL as title
+				info.originalUrl = input
+				vlcMediaInfo[info.url] = info
 
-				await vlc.status.enqueue info.url, defer(err)
-				if err
-					vlc.status.empty()
-					log.warn "VLC API returned an error when trying to play", err
-					ts3query.sendtextmessage args.targetmode, invoker.id, "Something seems to be wrong with the specified media. Try checking the URL/path you provided?"
-					return
-
+				# add it in VLC
+				vlc.playlist.add info.url
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Added [URL=#{input}]#{info.title}[/URL] to the playlist."
+
+				# TODO: Do we need to make sure that vlc.playlist.mode is not set to "Single" here or is that handled automatically?
 			when "stop"
-				await vlc.status.stop defer(err)
-
-				vlc.status.empty()
-
-				ts3query.sendtextmessage args.targetmode, invoker.id, "Stopped playback."
+				vlc.stop()
 			when "vol"
 				vol = parseInt paramline
 
-				if paramline.trim().length <= 0 or vol > 511 or vol < 0
-					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]vol <number>[/B] - takes a number between 0 (0%) and 1024 (400%) to set the volume. 100% is 256. Defaults to 128 (50%) on startup."
+				if paramline.trim().length <= 0 or vol > 200 or vol < 0
+					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]vol <number>[/B] - takes a number between 0 (0%) and 200 (200%) to set the volume. 100% is 100. Defaults to 50 (50%) on startup."
 					return
 
-				await vlc.status.volume paramline, defer(err)
-
-				if err
-					log.warn "Failed to set volume", err
-					ts3query.sendtextmessage args.targetmode, invoker.id, "That unfortunately didn't work out."
-					return
-
-				ts3query.sendtextmessage args.targetmode, invoker.id, "Volume set."
+				vlc.audio.volume = vol
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Volume set to #{vol}%."
 			when "changenick"
 				nick = if paramline.length > params[0].length then paramline else params[0]
 				if nick.length < 3 or nick.length > 30
