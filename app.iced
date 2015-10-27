@@ -232,7 +232,7 @@ ts3clientService.on "started", (ts3proc) =>
 					return
 				vlc.playlist.next()
 			when "prev", "previous"
-				if vlc.playlist.mode != vlc.playlist.Loop and vlc.playlist.currentItem == 0
+				if vlc.playlist.mode != vlc.playlist.Loop and vlc.playlist.currentItem <= 0
 					ts3query.sendtextmessage args.targetmode, invoker.id, "Can't jump to previous playlist item, this is the first one!"
 					return
 				vlc.playlist.prev()
