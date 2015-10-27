@@ -205,6 +205,24 @@ ts3clientService.on "started", (ts3proc) =>
 
 				# play it in VLC
 				vlc.play info.url
+			when "loop"
+				inputBB = paramline
+				input = null
+				switch (removeBB paramline).toLowerCase().trim()
+					when ""
+						# just show current mode
+						ts3query.sendtextmessage args.targetmode, invoker.id, "Playlist looping is #{if vlc.playlist.mode == vlc.playlist.Loop then "on" else "off"}."
+					when "on"
+						# enable looping
+						vlc.playlist.mode = vlc.playlist.Loop
+						ts3query.sendtextmessage args.targetmode, invoker.id, "Playlist looping is now on."
+					when "off"
+						# disable looping
+						vlc.playlist.mode = vlc.playlist.Normal
+						ts3query.sendtextmessage args.targetmode, invoker.id, "Playlist looping is now off."
+					else
+						ts3query.sendtextmessage args.targetmode, invoker.id, "[B]#{name} on|off[/B] - Turns playlist looping on or off"
+						return
 			when "next"
 				vlc.playlist.next()
 			when "prev", "previous"
