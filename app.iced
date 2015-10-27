@@ -209,6 +209,9 @@ ts3clientService.on "started", (ts3proc) =>
 				vlc.playlist.next()
 			when "prev", "previous"
 				vlc.playlist.prev()
+			when "empty", "clear"
+				vlc.playlist.clear()
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Cleared the playlist."
 			when "enqueue", "add", "append"
 				inputBB = paramline.trim()
 				input = (removeBB paramline).trim()
