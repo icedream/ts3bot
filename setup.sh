@@ -11,7 +11,6 @@ rm -r /etc/service/cron /etc/service/nginx /etc/service/nginx-log-forwarder
 
 # Set up APT sources
 rm /etc/apt/sources.list.d/*
-add-apt-repository ppa:mc3man/trusty-media -y
 
 # Now install all packages we need
 apt-get update
@@ -22,7 +21,7 @@ apt-get install -y --no-install-recommends \
 	dbus \
 	cmake cmake-data \
 	python python-minimal python-pkg-resources rtmpdump ffmpeg \
-	vlc vlc-plugin-pulse
+	vlc-nox '^libvlc[0-9]+$' libvlc-dev vlc-plugin-pulse
 
 # DBus initialization
 mkdir -p /var/run/dbus
