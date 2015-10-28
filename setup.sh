@@ -20,7 +20,7 @@ apt-get install -y --no-install-recommends \
 	pulseaudio pulseaudio-utils \
 	dbus \
 	cmake cmake-data \
-	python python-minimal python-pkg-resources rtmpdump ffmpeg \
+	python python-minimal python-pkg-resources \
 	vlc-nox '^libvlc[0-9]+$' libvlc-dev vlc-plugin-pulse
 
 # DBus initialization
