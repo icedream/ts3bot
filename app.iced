@@ -290,7 +290,14 @@ ts3clientService.on "started", (ts3proc) =>
 			when "stop"
 				vlc.stop()
 			when "vol"
-				vol = parseInt paramline
+				inputBB = paramline.trim()
+				input = (removeBB paramline).trim()
+
+				if inputBB.length <= 0
+					ts3query.sendtextmessage args.targetmode, invoker.id, "Volume is currently set to #{vlc.audio.volume}%."
+					return
+
+				vol = parseInt input
 
 				if paramline.trim().length <= 0 or vol == NaN or vol > 200 or vol < 0
 					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]vol <number>[/B] - takes a number between 0 (0%) and 200 (200%) to set the volume. 100% is 100. Defaults to 50 (50%) on startup."
