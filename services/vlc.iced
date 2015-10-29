@@ -36,6 +36,8 @@ module.exports = class VLCService extends services.Service
 				cb?()
 				return
 
+			@_instance.stop()
+
 			# TODO: Is there even a proper way to shut this down?
 			@_instance = null
 
