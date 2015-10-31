@@ -35,7 +35,7 @@ cd ~app
 wget http://dl.4players.de/ts/releases/${TS3CLIENT_VERSION}/TeamSpeak3-Client-linux_amd64-${TS3CLIENT_VERSION}.run -Ots3client.run
 chmod +x ./ts3client.run
 sed -i 's/^MS_PrintLicense$/#MS_PrintLicense/g' ./ts3client.run
-sudo -u app ./ts3client.run --quiet --target ts3client
+./ts3client.run --quiet --target ts3client
 rm ./ts3client.run
 
 # Install TS3Bot
