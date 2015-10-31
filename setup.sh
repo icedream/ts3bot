@@ -6,9 +6,6 @@ set -ex
 export INITRD=no
 export DEBIAN_FRONTEND=noninteractive
 
-# Get rid of some preinstalled services we don't need
-rm -r /etc/service/cron /etc/service/nginx /etc/service/nginx-log-forwarder
-
 # Set up APT sources
 rm /etc/apt/sources.list.d/*
 
@@ -18,7 +15,6 @@ apt-get install -y --no-install-recommends \
 	wget ca-certificates \
 	blackbox xvfb xdotool \
 	pulseaudio pulseaudio-utils \
-	dbus \
 	cmake cmake-data \
 	python python-minimal python-pkg-resources \
 	vlc-nox '^libvlc[0-9]+$' libvlc-dev vlc-plugin-pulse
@@ -30,21 +26,21 @@ dbus-uuidgen --ensure
 
 # Configure GUI user, we are going to use the pre-setup "app" user for this
 mkdir -p /config
-/sbin/setuser app ln -sf /config ~app/.ts3bot
+ln -sf /config ~app/.ts3bot
 
 # Install TeamSpeak3.
 # Original comment that used to be here: temporary non-interactive teamspeak3 install hack, remove before publishing!!
 # In fact, it would be nice if we had some lazy handling code for this that just requires the user to provide a "--agree-with-license" once.
 cd ~app
-/sbin/setuser app wget http://dl.4players.de/ts/releases/${TS3CLIENT_VERSION}/TeamSpeak3-Client-linux_amd64-${TS3CLIENT_VERSION}.run -Ots3client.run
+wget http://dl.4players.de/ts/releases/${TS3CLIENT_VERSION}/TeamSpeak3-Client-linux_amd64-${TS3CLIENT_VERSION}.run -Ots3client.run
 chmod +x ./ts3client.run
 sed -i 's/^MS_PrintLicense$/#MS_PrintLicense/g' ./ts3client.run
-/sbin/setuser app ./ts3client.run --quiet --target ts3client
+sudo -u app ./ts3client.run --quiet --target ts3client
 rm ./ts3client.run
 
 # Install TS3Bot
 wget https://github.com/icedream/ts3bot-control/archive/${TS3BOT_COMMIT}.tar.gz -O- |\
-	/sbin/setuser app tar xzv
+	tar xzv
 mv ts3bot-control* ts3bot
 (cd ts3bot && \
 	npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(nodejs --version | tr -d 'v')" \

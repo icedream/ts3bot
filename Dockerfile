@@ -1,7 +1,11 @@
-FROM phusion/passenger-nodejs:0.9.17
+FROM nodejs:4.2
 
 ENV TS3CLIENT_VERSION 3.0.18.2
 ENV TS3BOT_COMMIT 82c19a2196770c463d8c94fc9e5842dfe8697c8d
+
+# Add "app" user
+RUN mkdir -p /tmp/empty &&\
+	useradd -d /home/app -l -g app -m /tmp/empty -u 9999 app
 
 ADD setup.sh /
 RUN sh /setup.sh
@@ -11,4 +15,5 @@ COPY etc/ /etc
 
 # Startup configuration
 WORKDIR /home/app
-ENTRYPOINT [ "/sbin/my_init" ]
+USER app
+ENTRYPOINT [ "node", "/home/app" ]
