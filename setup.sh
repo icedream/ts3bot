@@ -16,11 +16,6 @@ apt-get install -y --no-install-recommends \
 	python python-minimal python-pkg-resources \
 	vlc-nox '^libvlc[0-9]+$' libvlc-dev vlc-plugin-pulse
 
-# DBus initialization
-mkdir -p /var/run/dbus
-chown messagebus:messagebus /var/run/dbus
-dbus-uuidgen --ensure
-
 # Configure GUI user, we are going to use the pre-setup "app" user for this
 mkdir -p /config
 ln -sf /config ~app/.ts3bot
