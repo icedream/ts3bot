@@ -6,9 +6,6 @@ set -ex
 export INITRD=no
 export DEBIAN_FRONTEND=noninteractive
 
-# Set up APT sources
-rm /etc/apt/sources.list.d/*
-
 # Now install all packages we need
 apt-get update
 apt-get install -y --no-install-recommends \
