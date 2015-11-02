@@ -13,7 +13,7 @@ parserLog = getLogger "parser"
 escape = (value) => value.toString()\
 	.replace(/\\/g, "\\\\")\
 	.replace(/\//g, "\\/")\
-	.replace(/\|/g, "\\|")\
+	.replace(/\|/g, "\\p")\
 	.replace(/\n/g, "\\n")\
 	.replace(/\r/g, "\\r")\
 	.replace(/\t/g, "\\t")\
@@ -24,7 +24,7 @@ unescape = (value) => value.toString()\
 	.replace(/\\t/g, "\t")\
 	.replace(/\\r/g, "\r")\
 	.replace(/\\n/g, "\n")\
-	.replace(/\\\|/g, "|")\
+	.replace(/\\p/g, "|")\
 	.replace(/\\\//g, "/")\
 	.replace(/\\\\/g, "\\")
 
