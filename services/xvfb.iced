@@ -4,11 +4,15 @@ config = require("../config")
 services = require("../services")
 require_bin = require("../require_bin")
 
-require_bin "Xvfb"
+xvfbPath = require_bin "Xvfb", false
 
 module.exports = class XvfbService extends services.Service
 	constructor: -> super "Xvfb",
 		start: (cb) ->
+			if not xvfbPath?
+				cb? new Error "Xvfb is not available."
+				return
+
 			if @instance
 				cb? null, @instance
 				return
