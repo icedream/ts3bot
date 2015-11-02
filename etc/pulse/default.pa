@@ -6,7 +6,7 @@
 # Audio sinks
 load-module module-rescue-streams
 load-module module-always-sink
-load-module module-null-sink sink_name=TS3Bot sink_properties=device.description="TS3Bot" tsched=1
+load-module module-null-sink sink_name="TS3Bot" sink_properties=device.description="TS3Bot"
 
 # Accept clients -- very important
 load-module module-native-protocol-unix
