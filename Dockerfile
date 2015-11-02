@@ -18,4 +18,4 @@ COPY etc/ /etc
 # Startup configuration
 WORKDIR /home/app
 USER app
-ENTRYPOINT [ "node", "/home/app" ]
+CMD [ "node", "/home/app/ts3bot", "--ts3-install-path=/home/app/ts3client" ]
