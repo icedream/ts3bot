@@ -38,6 +38,16 @@ module.exports =
 # Separate our own PulseAudio from any system one by using our own custom XDG directories.
 process.env.XDG_RUNTIME_DIR = temp.mkdirSync "ts3bot-xdg"
 
+# Xvfb for isolated graphical interfaces!
+xvfbService = services.find("xvfb")
+await xvfbService.start defer err, vlc
+if err
+	if not process.env.DISPLAY? or process.env.DISPLAY.trim() == ""
+		log.error "Xvfb could not start up and no display is available!", err
+		await module.exports.shutdown defer()
+		process.exit 1
+	log.warn "Xvfb could not start up - will use existing display!", err
+
 # PulseAudio daemon
 await services.find("pulseaudio").start defer err
 if err
