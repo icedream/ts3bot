@@ -8,6 +8,7 @@ request = require "request"
 fs = require("fs")
 path = require("path")
 qs = require "querystring"
+temp = require("temp").track()
 youtubedl = require "youtube-dl"
 isValidUrl = (require "valid-url").isWebUri
 
@@ -33,6 +34,9 @@ module.exports =
 
 		cb?()
 	shutdownSync: => Sync @shutdown
+
+# Separate our own PulseAudio from any system one by using our own custom XDG directories.
+process.env.XDG_RUNTIME_DIR = temp.mkdirSync "ts3bot-xdg"
 
 # PulseAudio daemon
 await services.find("pulseaudio").start defer err

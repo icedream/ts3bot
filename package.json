@@ -38,6 +38,7 @@
     "stream-splitter": "^0.3.2",
     "string.prototype.startswith": "^0.2.0",
     "sync": "^0.2.5",
+    "temp": "^0.8.3",
     "valid-url": "^1.0.9",
     "webchimera.js": "^0.1.38",
     "which": "^1.1.2",

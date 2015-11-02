@@ -22,6 +22,10 @@ module.exports = class TS3ClientService extends services.Service
 	]
 	constructor: -> super "TS3Client",
 		start: (args, cb) =>
+			if not process.env.XDG_RUNTIME_DIR? or process.env.XDG_RUNTIME_DIR.trim() == ""
+				cb? new Error "XDG runtime directory needs to be set."
+				return
+
 			if typeof args == "function"
 				cb = args
 				args = null
