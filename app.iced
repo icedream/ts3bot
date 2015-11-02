@@ -18,13 +18,6 @@ removeBB = (str) -> str.replace /\[(\w+)[^\]]*](.*?)\[\/\1]/g, "$2"
 
 module.exports =
 	shutdown: (cb) =>
-		apiService = services.find("api")
-		if apiService and apiService.state == "started"
-			await apiService.stop defer(err)
-			if err
-				cb? new Error "Could not stop API"
-				return
-
 		ts3clientService = services.find("ts3client")
 		if ts3clientService and ts3clientService.state == "started"
 			await ts3clientService.stop defer(err)
