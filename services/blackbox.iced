@@ -4,7 +4,7 @@ services = require("../services")
 StreamSplitter = require("stream-splitter")
 require_bin = require("../require_bin")
 
-blackboxBinPath = require_bin "blackbox"
+blackboxBinPath = require_bin "blackbox", false
 
 module.exports = class BlackBoxService extends services.Service
 	dependencies: [
@@ -12,6 +12,10 @@ module.exports = class BlackBoxService extends services.Service
 	]
 	constructor: -> super "BlackBox",
 		start: (cb) ->
+			if not blackboxBinPath?
+				cb? new Error "Blackbox not available."
+				return
+
 			if @process
 				cb? null, @process
 				return
