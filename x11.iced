@@ -6,12 +6,17 @@ services = require("./services")
 StreamSplitter = require("stream-splitter")
 require_bin = require("./require_bin")
 
-xdotoolBinPath = require_bin "xdotool"
+xdotoolBinPath = require_bin "xdotool", false
 
 # Just some tools to work with the X11 windows
 module.exports =
 	getWindowIdByProcessId: (pid, cb) =>
 		wid = null
+
+		# Return null instantly if xdotool is not available
+		if not xdotoolBinPath?
+			cb? new Error "xdotool is not available"
+			return
 
 		# We provide --name due to the bug mentioned at https://github.com/jordansissel/xdotool/issues/14
 		xdoproc = spawn xdotoolBinPath, [ "search", "--any", "--pid", pid, "--name", "xdosearch" ],
@@ -43,6 +48,11 @@ module.exports =
 	getWindowIdByProcessIdSync: (pid) => Sync() => @getWindowIdByProcessId.sync @, pid
 
 	sendKeys: (wid, keys, cb) =>
+		# Do not bother trying if xdotool is not available
+		if not xdotoolBinPath?
+			cb? new Error "xdotool not available."
+			return
+
 		# blackbox needs to be running for windowactivate to work
 		blackboxService = services.find("BlackBox")
 		if blackboxService.state != "started"
