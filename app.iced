@@ -41,13 +41,13 @@ process.env.XDG_RUNTIME_DIR = temp.mkdirSync "ts3bot-xdg"
 # PulseAudio daemon
 await services.find("pulseaudio").start defer err
 if err
-	log.warn "PulseAudio could not start up, audio may not act as expected!"
+	log.warn "PulseAudio could not start up, audio may not act as expected!", err
 
 # VLC via WebChimera.js
 vlcService = services.find("vlc")
 await vlcService.start defer err, vlc
 if err
-	log.warn "VLC could not start up!"
+	log.warn "VLC could not start up!", err
 	await module.exports.shutdown defer()
 	process.exit 1
 
@@ -316,6 +316,6 @@ ts3clientService.on "started", (ts3proc) =>
 
 await ts3clientService.start [ config.get("ts3-server") ], defer(err, ts3proc)
 if err
-	log.error "TeamSpeak3 could not start, shutting down."
+	log.error "TeamSpeak3 could not start, shutting down.", err
 	await module.exports.shutdown defer()
 	process.exit 1
