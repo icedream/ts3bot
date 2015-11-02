@@ -10,7 +10,6 @@ pacmdPath = require_bin "pacmd"
 
 module.exports = class PulseAudioService extends services.Service
 	dependencies: [
-		"xvfb"
 	]
 	constructor: -> super "PulseAudio",
 		start: (cb) ->

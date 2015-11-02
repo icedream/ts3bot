@@ -16,14 +16,16 @@ ts3client_binpath = require_bin path.join(config.get("ts3-install-path"), "ts3cl
 
 module.exports = class TS3ClientService extends services.Service
 	dependencies: [
-		"xvfb",
-		"blackbox",
 		"pulseaudio"
 	]
 	constructor: -> super "TS3Client",
 		start: (args, cb) =>
 			if not process.env.XDG_RUNTIME_DIR? or process.env.XDG_RUNTIME_DIR.trim() == ""
 				cb? new Error "XDG runtime directory needs to be set."
+				return
+
+			if not process.env.DISPLAY? or process.env.DISPLAY.trim() == ""
+				cb? new Error "There is no display to run TeamSpeak3 on."
 				return
 
 			if typeof args == "function"
