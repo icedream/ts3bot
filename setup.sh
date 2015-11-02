@@ -35,7 +35,7 @@ wget https://github.com/icedream/ts3bot-control/archive/${TS3BOT_COMMIT}.tar.gz 
 	tar xzv
 mv ts3bot-control* ts3bot
 (cd ts3bot && \
-	npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(nodejs --version | tr -d 'v')" \
+	npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" \
 		npm install)
 
 # Install youtube-dl (actually done by npm already in a non-system-wide way)
