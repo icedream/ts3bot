@@ -214,8 +214,15 @@ module.exports = class SettingsFile
 				settingsObj.log.silly "Requested update of #{id.id}"
 				for own index, identity of settingsObj.identities
 					if identity.id == id.id
+						# remove functions from this object
+						cleanIdentity = merge @
+						for own k, v of cleanIdentity
+							if typeof v == "function"
+								delete cleanIdentity[k]
+
+						# now this is our new identity object!
 						settingsObj.log.silly "Updating identity #{id.id}"
-						settingsObj.identities[index] = merge identity, id
+						settingsObj.identities[index] = cleanIdentity
 						return
 			remove: () ->
 				for own index, identity of settingsObj.identities
