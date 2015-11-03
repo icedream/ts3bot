@@ -19,7 +19,7 @@ module.exports = class Service extends EventEmitter
 
 	state: "stopped"
 
-	start: () => @_start.apply @, [ false ].concat Array.prototype.slice.call(arguments)
+	start: () => @_start false, arguments...
 
 	startSync: () => Sync () => @start.sync @
 
@@ -85,7 +85,7 @@ module.exports = class Service extends EventEmitter
 
 		cb? null, service
 
-	stop: () => @_stop.apply @, [ false ].concat Array.prototype.slice.call(arguments)
+	stop: () => @_stop false, arguments...
 
 	stopSync: () => Sync () => @stop.sync @
 
