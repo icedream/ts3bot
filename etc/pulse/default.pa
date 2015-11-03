@@ -11,6 +11,9 @@ load-module module-null-sink sink_name="TS3Bot" sink_properties=device.descripti
 # Accept clients -- very important
 load-module module-native-protocol-unix
 
+# Restore volume
+load-module module-volume-restore
+
 .nofail
 
 # Suspend on idle
