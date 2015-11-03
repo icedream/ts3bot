@@ -43,30 +43,35 @@ process.on("exit", function(e) {
 
 process.on("SIGTERM", function(e) {
 	log.debug("Caught SIGTERM signal");
-	app.shutdown();
-	process.exit(0);
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
 
 process.on("SIGINT", function() {
 	log.debug("Caught SIGINT signal");
-	app.shutdown();
-	process.exit(0);
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
 
 process.on("SIGHUP", function() {
 	log.debug("Caught SIGHUP signal");
-	app.shutdown();
-	process.exit(0);
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
 
 process.on("SIGQUIT", function() {
 	log.debug("Caught SIGQUIT signal");
-	app.shutdown();
-	process.exit(0);
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
 
 process.on("SIGABRT", function() {
 	log.debug("Caught SIGABRT signal");
-	app.shutdown();
-	process.exit(0);
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
