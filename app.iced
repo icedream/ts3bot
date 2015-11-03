@@ -73,6 +73,9 @@ ts3clientService = services.find("ts3client")
 ts3clientService.on "started", (ts3proc) =>
 	ts3query = ts3clientService.query
 
+	ts3clientService.once "stopped", () =>
+		ts3query = undefined
+
 	# VLC event handling
 	vlc.onPlaying = () =>
 		# Restore audio volume
@@ -80,12 +83,12 @@ ts3clientService.on "started", (ts3proc) =>
 
 		# TODO: Check why info is sometimes null, something must be wrong with the "add"/"play" commands here!
 		info = vlcMediaInfo[vlc.playlist.items[vlc.playlist.currentItem].mrl]
-		ts3query.sendtextmessage 2, 0, "Now playing [URL=#{info?.originalUrl or vlc.playlist.items[vlc.playlist.currentItem].mrl}]#{info?.title or vlc.playlist.items[vlc.playlist.currentItem].mrl}[/URL]."
-	vlc.onPaused = () => ts3query.sendtextmessage 2, 0, "Paused."
-	vlc.onForward = () => ts3query.sendtextmessage 2, 0, "Fast-forwarding..."
-	vlc.onBackward = () => ts3query.sendtextmessage 2, 0, "Rewinding..."
+		ts3query?.sendtextmessage 2, 0, "Now playing [URL=#{info?.originalUrl or vlc.playlist.items[vlc.playlist.currentItem].mrl}]#{info?.title or vlc.playlist.items[vlc.playlist.currentItem].mrl}[/URL]."
+	vlc.onPaused = () => ts3query?.sendtextmessage 2, 0, "Paused."
+	vlc.onForward = () => ts3query?.sendtextmessage 2, 0, "Fast-forwarding..."
+	vlc.onBackward = () => ts3query?.sendtextmessage 2, 0, "Rewinding..."
 	vlc.onEncounteredError = () => log.error "VLC has encountered an error! You will need to restart the bot.", arguments
-	vlc.onStopped = () => ts3query.sendtextmessage 2, 0, "Stopped."
+	vlc.onStopped = () => ts3query?.sendtextmessage 2, 0, "Stopped."
 
 	ts3query.currentScHandlerID = 1
 	ts3query.mydata = {}
