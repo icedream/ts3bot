@@ -78,7 +78,7 @@ module.exports = class Service extends EventEmitter
 		if not quiet
 			@log.info "Started #{@name}"
 
-		@_lastArgs = args
+		@_lastArgs = serviceArgs
 
 		@state = "started"
 		@emit "started", service
