@@ -8,6 +8,10 @@ load-module module-rescue-streams
 load-module module-always-sink
 load-module module-null-sink sink_name="TS3Bot" sink_properties=device.description="TS3Bot"
 
+# Restore
+load-module module-device-restore
+load-module module-stream-restore
+
 # Accept clients -- very important
 load-module module-native-protocol-unix
 
