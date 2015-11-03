@@ -1,0 +1,30 @@
+.fail
+
+# Set tsched=0 here if you experience glitchy playback. This will
+# revert back to interrupt-based scheduling and should fix it.
+
+# Audio sinks
+load-module module-rescue-streams
+load-module module-always-sink
+load-module module-null-sink sink_name="TS3Bot" sink_properties=device.description="TS3Bot"
+
+# Restore
+load-module module-device-restore
+load-module module-stream-restore
+
+# Accept clients -- very important
+load-module module-native-protocol-unix
+
+.ifexists module-x11-publish.so
+    # Publish to X11 so the clients know how to connect to Pulse. Will
+    # clear itself on unload.
+    load-module module-x11-publish
+.endif
+
+.nofail
+
+# Suspend on idle
+load-module module-suspend-on-idle
+
+# Filters... will we ever need them?
+load-module module-filter-apply
