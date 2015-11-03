@@ -61,6 +61,9 @@ if err
 	await module.exports.shutdown defer()
 	process.exit 1
 
+# This is where we keep track of the volume
+vlcVolume = 50
+
 # Cached information for tracks in playlist
 vlcMediaInfo = {}
 
@@ -72,6 +75,9 @@ ts3clientService.on "started", (ts3proc) =>
 
 	# VLC event handling
 	vlc.onPlaying = () =>
+		# Restore audio volume
+		vlc.audio.volume = vlcVolume
+
 		# TODO: Check why info is sometimes null, something must be wrong with the "add"/"play" commands here!
 		info = vlcMediaInfo[vlc.playlist.items[vlc.playlist.currentItem].mrl]
 		ts3query.sendtextmessage 2, 0, "Now playing [URL=#{info?.originalUrl or vlc.playlist.items[vlc.playlist.currentItem].mrl}]#{info?.title or vlc.playlist.items[vlc.playlist.currentItem].mrl}[/URL]."
@@ -302,7 +308,7 @@ ts3clientService.on "started", (ts3proc) =>
 				input = (removeBB paramline).trim()
 
 				if inputBB.length <= 0
-					ts3query.sendtextmessage args.targetmode, invoker.id, "Volume is currently set to #{vlc.audio.volume}%."
+					ts3query.sendtextmessage args.targetmode, invoker.id, "Volume is currently set to #{vlcVolume}%."
 					return
 
 				vol = parseInt input
@@ -311,7 +317,7 @@ ts3clientService.on "started", (ts3proc) =>
 					ts3query.sendtextmessage args.targetmode, invoker.id, "[B]vol <number>[/B] - takes a number between 0 (0%) and 200 (200%) to set the volume. 100% is 100. Defaults to 50 (50%) on startup."
 					return
 
-				vlc.audio.volume = vol
+				vlc.audio.volume = vlcVolume = vol
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Volume set to #{vol}%."
 			when "changenick"
 				nick = if paramline.length > params[0].length then paramline else params[0]
