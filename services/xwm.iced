@@ -8,12 +8,19 @@ xwmBinPath = require_bin "x-window-manager", false
 
 module.exports = class XWindowManagerService extends services.Service
 	dependencies: [
-		"xvfb"
 	]
 	constructor: -> super "XWindowManager",
 		start: (cb) ->
 			if not xwmBinPath?
 				cb? new Error "A window manager not available."
+				return
+
+			if not process.env.XDG_RUNTIME_DIR? or process.env.XDG_RUNTIME_DIR.trim() == ""
+				cb? new Error "XDG runtime directory needs to be set."
+				return
+
+			if not process.env.DISPLAY? or process.env.DISPLAY.trim() == ""
+				cb? new Error "There is no display to run TeamSpeak3 on."
 				return
 
 			if @process
@@ -25,10 +32,6 @@ module.exports = class XWindowManagerService extends services.Service
 			proc = null
 			doStart = null
 			doStart = () =>
-				await services.find("xvfb").start defer(err)
-				if err
-					throw new Error "Dependency xvfb failed."
-
 				proc = spawn xwmBinPath, [],
 					stdio: ['ignore', 'pipe', 'pipe']
 					detached: true
