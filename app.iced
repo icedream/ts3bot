@@ -154,6 +154,9 @@ ts3clientService.on "started", (ts3proc) =>
 	ts3query.on "message.notifytextmessage", (args) =>
 		await ts3query.use args.schandlerid, defer(err, data)
 
+		if not args.msg?
+			return
+
 		msg = args.msg
 		invoker = { name: args.invokername, uid: args.invokeruid, id: args.invokerid }
 		targetmode = args.targetmode # 1 = private, 2 = channel
