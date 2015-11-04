@@ -323,7 +323,7 @@ ts3clientService.on "started", (ts3proc) =>
 				vlc.audio.volume = vlcVolume = vol
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Volume set to #{vol}%."
 			when "changenick"
-				nick = if paramline.length > params[0].length then paramline else params[0]
+				nick = paramline
 				Sync () =>
 					try
 						ts3query.clientupdate.sync ts3query, { client_nickname: nick }
