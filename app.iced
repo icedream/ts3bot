@@ -328,8 +328,11 @@ ts3clientService.on "started", (ts3proc) =>
 					try
 						ts3query.clientupdate.sync ts3query, { client_nickname: nick }
 					catch err
-						ts3query.sendtextmessage args.targetmode, invoker.id, "That unfortunately didn't work out."
 						log.warn "ChangeNick failed, error information:", err
+						switch err.id
+							when 513 then ts3query.sendtextmessage args.targetmode, invoker.id, "That nickname is already in use."
+							when 1541 then ts3query.sendtextmessage args.targetmode, invoker.id, "That nickname is too short or too long."
+							else ts3query.sendtextmessage args.targetmode, invoker.id, "That unfortunately didn't work out."
 
 await ts3clientService.start [ config.get("ts3-server") ], defer(err, ts3proc)
 if err
