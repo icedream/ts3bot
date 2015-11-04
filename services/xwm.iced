@@ -29,7 +29,7 @@ module.exports = class XWindowManagerService extends services.Service
 				if err
 					throw new Error "Dependency xvfb failed."
 
-				proc = spawn xwmBinPath, [ "-rc", "/dev/null" ],
+				proc = spawn xwmBinPath, [],
 					stdio: ['ignore', 'pipe', 'pipe']
 					detached: true
 					env:
