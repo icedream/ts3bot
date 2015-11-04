@@ -12,6 +12,9 @@ RUN mkdir -p /tmp/empty &&\
 ADD setup.sh /
 RUN sh /setup.sh
 
+# Pass through process nice caps for pulseaudio
+RUN setcap 'cap_sys_nice=ep' $(which pulseaudio)
+
 # Copy over configuration for other daemons
 COPY etc/ /etc
 
