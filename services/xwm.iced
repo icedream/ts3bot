@@ -1,19 +1,19 @@
 spawn = require("child_process").spawn
-log = require("../logger")("BlackBox")
+log = require("../logger")("XWindowManager")
 services = require("../services")
 StreamSplitter = require("stream-splitter")
 require_bin = require("../require_bin")
 
-blackboxBinPath = require_bin "blackbox", false
+xwmBinPath = require_bin "x-window-manager", false
 
-module.exports = class BlackBoxService extends services.Service
+module.exports = class XWindowManagerService extends services.Service
 	dependencies: [
 		"xvfb"
 	]
-	constructor: -> super "BlackBox",
+	constructor: -> super "XWindowManager",
 		start: (cb) ->
-			if not blackboxBinPath?
-				cb? new Error "Blackbox not available."
+			if not xwmBinPath?
+				cb? new Error "A window manager not available."
 				return
 
 			if @process
@@ -29,7 +29,7 @@ module.exports = class BlackBoxService extends services.Service
 				if err
 					throw new Error "Dependency xvfb failed."
 
-				proc = spawn blackboxBinPath, [ "-rc", "/dev/null" ],
+				proc = spawn xwmBinPath, [ "-rc", "/dev/null" ],
 					stdio: ['ignore', 'pipe', 'pipe']
 					detached: true
 					env:
@@ -55,9 +55,9 @@ module.exports = class BlackBoxService extends services.Service
 						return
 					if not calledCallback
 						calledCallback = true
-						@log.warn "BlackBox terminated unexpectedly during startup."
-						cb? new Error "BlackBox terminated unexpectedly."
-					@log.warn "BlackBox terminated unexpectedly, restarting."
+						@log.warn "Window manager terminated unexpectedly during startup."
+						cb? new Error "Window manager terminated unexpectedly."
+					@log.warn "Window manager terminated unexpectedly, restarting."
 					doStart()
 
 				@process = proc

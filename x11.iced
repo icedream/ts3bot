@@ -53,12 +53,12 @@ module.exports =
 			cb? new Error "xdotool not available."
 			return
 
-		# blackbox needs to be running for windowactivate to work
-		blackboxService = services.find("BlackBox")
-		if blackboxService.state != "started"
-			await blackboxService.start defer(err)
+		# a window manager needs to be running for windowactivate to work
+		xwmService = services.find("XWindowManager")
+		if xwmService.state != "started"
+			await xwmService.start defer(err)
 			if err
-				cb? new Error "Could not start compatible window manager."
+				cb? new Error "Could not start a window manager."
 				return
 
 		xdoproc = spawn xdotoolBinPath, [ "windowactivate", "--sync", wid, "key", "--clearmodifiers", "--delay", "100" ].concat(keys),
