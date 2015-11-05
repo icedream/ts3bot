@@ -2,7 +2,9 @@ which = require("which").sync
 path = require "path"
 log = require("./logger")("RequireBin")
 
-module.exports = (binName) =>
+module.exports = (binName, doErrorIfNotFound) =>
+	doErrorIfNotFound = true unless doErrorIfNotFound?
+
 	# check if xvfb is findable from here
 	if path.resolve(binName) == path.normalize(binName)
 		# this is an absolute path
@@ -14,5 +16,9 @@ module.exports = (binName) =>
 		log.debug "#{binName} detected:", binPath
 		return binPath
 	catch err
-		log.error "#{binName} could not be found.", err
-		throw new Error "#{binName} could not be found."
+		if doErrorIfNotFound
+			log.error "#{binName} could not be found."
+			throw new Error "#{binName} could not be found."
+		else
+			log.warn "#{binName} could not be found."
+			return null

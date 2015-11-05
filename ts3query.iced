@@ -10,9 +10,23 @@ merge = require "merge"
 
 parserLog = getLogger "parser"
 
-escape = (value) => value.toString().replace(///\\///g, "\\\\").replace(/\//g, "\\/").replace(/\|/g, "\\|").replace(///\ ///g, "\\s")
+escape = (value) => value.toString()\
+	.replace(/\\/g, "\\\\")\
+	.replace(/\//g, "\\/")\
+	.replace(/\|/g, "\\p")\
+	.replace(/\n/g, "\\n")\
+	.replace(/\r/g, "\\r")\
+	.replace(/\t/g, "\\t")\
+	.replace(/\ /g, "\\s")
 
-unescape = (value) => value.toString().replace(/\\s/g, " ").replace(/\\\//g, "/").replace(/\\\|/g, "|").replace(/\\\\/g, "\\")
+unescape = (value) => value.toString()\
+	.replace(/\\s/g, " ")\
+	.replace(/\\t/g, "\t")\
+	.replace(/\\r/g, "\r")\
+	.replace(/\\n/g, "\n")\
+	.replace(/\\p/g, "|")\
+	.replace(/\\\//g, "/")\
+	.replace(/\\\\/g, "\\")
 
 buildCmd = (name, namedArgs, posArgs) =>
 	# TODO: Add support for collected arguments (aka lists)

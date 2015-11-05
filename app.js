@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 require("iced-coffee-script/register");
 Sync = require("sync");
 
@@ -33,6 +35,7 @@ doShutdownAsync = function(cb) {
 process.on("uncaughtException", function(err) {
 	log.error("Shutting down due to an uncaught exception!", err);
 	app.shutdownSync();
+	process.exit(0xFF);
 });
 
 process.on("exit", function(e) {
@@ -42,25 +45,35 @@ process.on("exit", function(e) {
 
 process.on("SIGTERM", function(e) {
 	log.debug("Caught SIGTERM signal");
-	app.shutdown();
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
 
 process.on("SIGINT", function() {
 	log.debug("Caught SIGINT signal");
-	app.shutdown();
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
 
 process.on("SIGHUP", function() {
 	log.debug("Caught SIGHUP signal");
-	app.shutdown();
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
 
 process.on("SIGQUIT", function() {
 	log.debug("Caught SIGQUIT signal");
-	app.shutdown();
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });
 
 process.on("SIGABRT", function() {
 	log.debug("Caught SIGABRT signal");
-	app.shutdown();
+	app.shutdown(function() {
+		process.exit(0);
+	});
 });

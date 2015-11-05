@@ -1,8 +1,11 @@
 {
   "name": "ts3bot",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Allows running TeamSpeak3 as a bot for all kinds of media (local music/videos/streams/YouTube/...) without the need for a real GUI to exist.",
   "main": "app.js",
+  "bin": {
+    "ts3bot": "app.js"
+  },
   "keywords": [
     "teamspeak",
     "teamspeak3",
@@ -38,8 +41,9 @@
     "stream-splitter": "^0.3.2",
     "string.prototype.startswith": "^0.2.0",
     "sync": "^0.2.5",
+    "temp": "^0.8.3",
     "valid-url": "^1.0.9",
-    "vlc-api": "0.0.0",
+    "webchimera.js": "^0.1.38",
     "which": "^1.1.2",
     "winston": "^1.0.1",
     "xvfb": "git://github.com/icedream/node-xvfb.git",

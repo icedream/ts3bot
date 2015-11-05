@@ -28,6 +28,9 @@ nconf.defaults
 if not nconf.get("ts3-server")
 	throw new Error "You need to provide a TeamSpeak3 server URL (starts with ts3server:// and can be generated from any TS3 client GUI)."
 
+if nconf.get("nickname")? and (nconf.get("nickname").length < 3 or nconf.get("nickname").length > 30)
+	throw new Error "Nickname must be between 3 and 30 characters long."
+
 console.log "Configuration loaded."
 
 if nconf.get "dump-config"

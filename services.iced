@@ -56,12 +56,11 @@ module.exports.Service = require "./service_template"
 
 # register services
 services = [
-	new(require "./services/api")
 	new(require "./services/pulseaudio")
 	new(require "./services/ts3client")
 	new(require "./services/vlc")
 	new(require "./services/xvfb")
-	new(require "./services/blackbox")
+	new(require "./services/xwm")
 ]
 services.sort require("./service_depcomparer") # sort services by dependency
 for service in services
