@@ -1,7 +1,7 @@
 FROM node:4.2
 
 ENV TS3CLIENT_VERSION 3.0.18.2
-ENV TS3BOT_COMMIT ed9e3605a76c225c59d950d2b4f7d7df0ef93d39
+ENV TS3BOT_COMMIT e93b3f5fff953176ab26b9da360fbddea8c33721
 
 # Add "app" user
 RUN mkdir -p /tmp/empty &&\
