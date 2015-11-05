@@ -186,6 +186,15 @@ ts3clientService.on "started", (ts3proc) =>
 			params = []
 
 		switch name.toLowerCase()
+			when "current"
+				item = vlc.playlist.items[vlc.playlist.currentItem]
+				info = vlcMediaInfo[item.mrl]
+				url = info?.originalUrl or item.mrl
+				title = info?.title or item.mrl
+				ts3query?.sendtextmessage 2, 0, "Currently playing [URL=#{url}]#{title}[/URL]."
+
+				# Restore audio volume
+				vlc.audio.volume = vlcVolume
 			when "pause"
 				# now we can toggle-pause playback this easily! yay!
 				vlc.togglePause()
