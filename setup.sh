@@ -9,7 +9,7 @@ export DEBIAN_FRONTEND=noninteractive
 # Now install all packages we need
 apt-get update
 apt-get install -y --no-install-recommends \
-	wget ca-certificates \
+	ca-certificates \
 	blackbox xvfb xdotool \
 	pulseaudio pulseaudio-utils \
 	cmake cmake-data \
