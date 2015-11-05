@@ -78,12 +78,21 @@ ts3clientService.on "started", (ts3proc) =>
 
 	# VLC event handling
 	vlc.onPlaying = () =>
-		# Restore audio volume
-		vlc.audio.volume = vlcVolume
+		try
+			# TODO: Check why info is sometimes null, something must be wrong with the "add"/"play" commands here!
+			# TODO: Do not format as URL in text message if MRL points to local file
 
-		# TODO: Check why info is sometimes null, something must be wrong with the "add"/"play" commands here!
-		info = vlcMediaInfo[vlc.playlist.items[vlc.playlist.currentItem].mrl]
-		ts3query?.sendtextmessage 2, 0, "Now playing [URL=#{info?.originalUrl or vlc.playlist.items[vlc.playlist.currentItem].mrl}]#{info?.title or vlc.playlist.items[vlc.playlist.currentItem].mrl}[/URL]."
+			item = vlc.playlist.items[vlc.playlist.currentItem]
+			info = vlcMediaInfo[item.mrl]
+			url = info?.originalUrl or item.mrl
+			title = info?.title or item.mrl
+			ts3query?.sendtextmessage 2, 0, "Now playing [URL=#{url}]#{title}[/URL]."
+
+			# Restore audio volume
+			vlc.audio.volume = vlcVolume
+		catch e
+			log.warn "Error in VLC onPlaying handler", e
+
 	vlc.onPaused = () => ts3query?.sendtextmessage 2, 0, "Paused."
 	vlc.onForward = () => ts3query?.sendtextmessage 2, 0, "Fast-forwarding..."
 	vlc.onBackward = () => ts3query?.sendtextmessage 2, 0, "Rewinding..."
