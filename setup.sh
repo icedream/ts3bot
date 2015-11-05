@@ -31,7 +31,7 @@ rm ./ts3client.run
 
 # Install TS3Bot via Git
 npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" \
-	npm install -g "https://github.com/icedream/ts3bot-control#${TS3BOT_COMMIT}"
+	npm install --unsafe-perm -g "https://github.com/icedream/ts3bot-control#${TS3BOT_COMMIT}"
 
 # Clean up APT
 apt-get autoremove -y --purge wget cmake cmake-data
