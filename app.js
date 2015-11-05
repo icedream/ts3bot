@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 require("iced-coffee-script/register");
 Sync = require("sync");
 
