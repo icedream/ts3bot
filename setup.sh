@@ -12,8 +12,7 @@ apt-get install -y --no-install-recommends \
 	ca-certificates \
 	blackbox xvfb xdotool \
 	pulseaudio pulseaudio-utils \
-	cmake cmake-data \
-	python python-minimal python-pkg-resources \
+	cmake python-minimal \
 	vlc-nox '^libvlc[0-9]+$' libvlc-dev vlc-plugin-pulse
 
 # Configure GUI user, we are going to use the pre-setup "app" user for this
