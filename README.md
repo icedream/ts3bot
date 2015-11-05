@@ -8,7 +8,7 @@ This is the Docker image that contains everything necessary to run Icedream's TS
 
 - Thanks to youtube-dl support for YouTube, SoundCloud, hundreds of other media portals and direct livestreams
 - Change the volume on the bot on the fly
-- Playlisting system (you can currently enqueue tracks so they're played one by one or even skip currently playing tracks)
+- Playlisting system (you can currently enqueue tracks, skip tracks and loop them)
 - Takes commands from both channel and private messages
 - Can change nickname on the fly
 
