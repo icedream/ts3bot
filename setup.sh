@@ -30,17 +30,9 @@ sed -i 's/^MS_PrintLicense$/#MS_PrintLicense/g' ./ts3client.run
 ./ts3client.run --quiet --target ts3client
 rm ./ts3client.run
 
-# Install TS3Bot
-wget https://github.com/icedream/ts3bot-control/archive/${TS3BOT_COMMIT}.tar.gz -O- |\
-	tar xzv
-mv ts3bot-control* ts3bot
-(cd ts3bot && \
-	npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" \
-		npm install)
-
-# Install youtube-dl (actually done by npm already in a non-system-wide way)
-#ADD https://yt-dl.org/latest/youtube-dl /usr/local/bin/youtube-dl
-#RUN chmod a+rx /usr/local/bin/youtube-dl
+# Install TS3Bot via Git
+npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" \
+	npm install -g "https://github.com/icedream/ts3bot-control#${TS3BOT_COMMIT}"
 
 # Clean up APT
 apt-get autoremove -y --purge wget cmake cmake-data

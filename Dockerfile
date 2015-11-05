@@ -1,7 +1,7 @@
 FROM node:4.2
 
 ENV TS3CLIENT_VERSION 3.0.18.2
-ENV TS3BOT_COMMIT b71c2be88ff76445d2859047dfbdd5c117e74523
+ENV TS3BOT_COMMIT 003ec4876352cf70f471d286543a88a3210df7a3
 
 # Add "app" user
 RUN mkdir -p /tmp/empty &&\
@@ -18,4 +18,4 @@ COPY etc/ /etc
 # Startup configuration
 WORKDIR /home/app
 USER app
-CMD [ "node", "/home/app/ts3bot", "--ts3-install-path=/home/app/ts3client" ]
+CMD [ "ts3bot", "--ts3-install-path=/home/app/ts3client" ]
