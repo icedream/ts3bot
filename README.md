@@ -14,13 +14,19 @@ This is the Docker image that contains everything necessary to run Icedream's TS
 
 ## Supported commands
 
-- `changenick <nickname>` - Changes the bot's nickname
-- `enqueue <url>` or `add <url>` or `append <url>` - Adds a URL to the playlist
-- `pause` - Pause playback of the current track
-- `play` - Resumes playback of the current track if it was paused
-- `play <url>` - Plays a URL
-- `stop` - Stops playback
-- `vol <value>` - Changes the playback volume, value can be between 0 (for 0%) and 1024 (for 400%). Default at startup is 128 (50%).
+- `changenick <nickname>` - Changes the bot's nickname.
+- `clear` or `empty` - Empties the current playlist.
+- `current` - Shows the currently playing track in the chat.
+- `enqueue <url>` or `add <url>` or `append <url>` - Adds a URL to the playlist.
+- `loop on` or `loop off` - Enables or disables playlist looping.
+- `next` - Jumps to the next item in the playlist.
+- `pause` - Pause playback of the current track.
+- `play` - Resumes playback of the current track.
+- `play <url>` - Plays a URL.
+- `prev` or `previous` - Jumps to the previous item in the playlist.
+- `stop` - Stops playback immediately.
+- `stop-after` - Stops playback after the current item is done playing.
+- `vol <value>` - Changes the playback volume, value can be between 0 (for 0%) and 200 (for 200%). Default at startup is 50 (50%).
 
 ## How to run this?
 
