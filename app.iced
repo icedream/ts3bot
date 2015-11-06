@@ -191,7 +191,7 @@ ts3clientService.on "started", (ts3proc) =>
 				info = vlcMediaInfo[item.mrl]
 				url = info?.originalUrl or item.mrl
 				title = info?.title or item.mrl
-				ts3query?.sendtextmessage 2, 0, "Currently playing [URL=#{url}]#{title}[/URL]."
+				ts3query?.sendtextmessage args.targetmode, invoker.id, "Currently playing [URL=#{url}]#{title}[/URL]."
 
 				# Restore audio volume
 				vlc.audio.volume = vlcVolume
