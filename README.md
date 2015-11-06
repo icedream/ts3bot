@@ -35,6 +35,7 @@ Commands being run as your bot user (`ts3bot`) are marked with `$` and commands 
         $ rm ts3client.run
 
 - Download the TS3Bot control application into your TS3Bot user's home folder. The TS3Bot user itself only needs read access to the code. You can do this in two ways:
+
     o By downloading the tar.gz archive from GitHub and unpacking it.
 
         $ wget -q -O- https://github.com/icedream/ts3bot-control/archive/develop.tar.gz | tar xz -C ~
@@ -49,6 +50,7 @@ Commands being run as your bot user (`ts3bot`) are marked with `$` and commands 
         $ npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" npm install
 
 - Now set up your TS3Bot configuration files in your TS3Bot user's home folder. For this create a folder `.ts3bot` in the home directory and put a `config.json` with your configuration there. The most minimal configuration consists of:
+
     o `identity-path` - The path to your identity INI file, export a newly generated identity from your own TeamSpeak3 client for that.
     o `ts3-install-path` - The path where you installed the TeamSpeak3 client to, you can skip this if you used exactly the same path as in the instructions above.
     o `ts3-server` - The URL to the server/channel you want the bot to connect to, you can get from your own TS3 client via "Extras" > "Invite friend", select the checkbox "Channel" and select "ts3server link" as invitation type.
