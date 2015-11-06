@@ -188,6 +188,10 @@ ts3clientService.on "started", (ts3proc) =>
 		switch name.toLowerCase()
 			when "current"
 				item = vlc.playlist.items[vlc.playlist.currentItem]
+				if not item?
+					ts3query?.sendtextmessage args.targetmode, invoker.id, "Not playing anything at the moment."
+					return
+
 				info = vlcMediaInfo[item.mrl]
 				url = info?.originalUrl or item.mrl
 				title = info?.title or item.mrl
