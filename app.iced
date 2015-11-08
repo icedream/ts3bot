@@ -11,6 +11,8 @@ qs = require "querystring"
 temp = require("temp").track()
 youtubedl = require "youtube-dl"
 isValidUrl = (require "valid-url").isWebUri
+parseDuration = require "./parse_duration.iced"
+prettyMs = require "pretty-ms"
 
 log = getLogger "Main"
 
@@ -246,6 +248,19 @@ ts3clientService.on "started", (ts3proc) =>
 
 				# play it in VLC
 				vlc.play info.url
+			when "time", "seek", "pos", "position"
+				inputBB = paramline.trim()
+				input = (removeBB paramline).trim()
+
+				# we gonna interpret no argument as us needing to return the current position
+				if input.length <= 0
+					ts3query.sendtextmessage args.targetmode, invoker.id, "Currently position is #{prettyMs vlc.input.time}."
+					return
+
+				ts3query.sendtextmessage args.targetmode, invoker.id, "Seeking to #{prettyMs vlc.input.time}."
+				vlc.input.time = parseDuration input
+
+				return
 			when "stop-after"
 				vlc.playlist.mode = vlc.playlist.Single
 				ts3query.sendtextmessage args.targetmode, invoker.id, "Playback will stop after the current playlist item."
