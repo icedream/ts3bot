@@ -107,7 +107,6 @@ module.exports = class TS3ClientQuery extends EventEmitter
 
 	connect: (cb) =>
 		@_tcpClient = new net.Socket
-		@_tcpClient.setKeepAlive true, 60000
 
 		@_tcpClient.on "close", () => @emit "close"
 		@_tcpClient.on "error", (err) =>
