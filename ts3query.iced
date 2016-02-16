@@ -140,6 +140,22 @@ module.exports = class TS3ClientQuery extends EventEmitter
 			else
 				@emit "vars", response.args
 
+		# send keepalives to avoid connection timeout
+		@_resetKeepalive()
+
+	_sendKeepalive: (cb) =>
+		@_log.silly "Send: <keep-alive>"
+
+		@_tcpClient.write "\n\r", "utf8", () => cb?()
+
+	_stopKeepalive: () =>
+		if @_keepaliveInt is not undefined
+			clearInterval @_keepaliveInt
+
+	_resetKeepalive: () =>
+		@_stopKeepalive()
+		@_keepaliveInt = setInterval @_sendKeepalive, 60000
+
 	close: (cb) =>
 		if not @_tcpClient
 			cb?()
@@ -165,6 +181,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		@_log.silly "Send:", text.trim()
 
 		@_tcpClient.write text, "utf8", () => cb?()
+		@_resetKeepalive()
 
 	banadd: (cb) =>
 		throw new Error "Not implemented yet"
