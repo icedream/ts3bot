@@ -157,6 +157,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		@_keepaliveInt = setInterval @_sendKeepalive, 60000
 
 	close: (cb) =>
+		@_stopKeepalive()
 		if not @_tcpClient
 			cb?()
 			return
