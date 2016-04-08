@@ -111,6 +111,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		@_tcpClient.on "close", () => @emit "close"
 		@_tcpClient.on "error", (err) =>
 			@_log.warn "Connection error", err
+			@_stopKeepalive()
 			@_tcpClient = null
 			@emit "error", err
 
