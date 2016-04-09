@@ -152,6 +152,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	_stopKeepalive: () =>
 		if @_keepaliveInt is not undefined
 			clearInterval @_keepaliveInt
+			@_keepaliveInt = undefined
 
 	_resetKeepalive: () =>
 		@_stopKeepalive()
