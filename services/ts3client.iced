@@ -192,6 +192,9 @@ module.exports = class TS3ClientService extends services.Service
 		# Delete bookmars to prevent auto-connect bookmarks from weirding out the client
 		await ts3settings.query "delete * from Bookmarks", defer()
 
+		# Delete default playback settings to enforce muted playback later on
+		await ts3settings.query "delete * from Profiles where key=\"Playback/Standard\"", defer()
+
 		# Let's make sure we have an identity!
 		force = ts3settings.getIdentitiesSize() <= 0 or config.get("identity-path")
 		if force
@@ -242,7 +245,9 @@ module.exports = class TS3ClientService extends services.Service
 			[ "Plugins", "lua_plugin", "false" ]
 			[ "Plugins", "test_plugin", "false" ]
 			[ "Plugins", "ts3g15", "false" ]
-			[ "Profiles", "DefaultPlaybackProfile", "Default" ]
+			[ "Profiles", "DefaultPlaybackProfile", "" ]
+			[ "Profiles", "Playback/", {} ]
+			###
 			[ "Profiles", "Playback/Default", {
 				Device: ''
 				DeviceDisplayName: "Default"
@@ -254,6 +259,7 @@ module.exports = class TS3ClientService extends services.Service
 				Mode: "PulseAudio"
 				PlaybackMonoOverCenterSpeaker: false
 				} ]
+			###
 			[ "Profiles", "DefaultCaptureProfile", "Default" ]
 			[ "Profiles", "Capture/Default", {
 				Device: ''
