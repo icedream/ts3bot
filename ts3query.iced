@@ -150,9 +150,9 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		@_tcpClient.write "\n\r", "utf8", () => cb?()
 
 	_stopKeepalive: () =>
-		if @_keepaliveInt is not undefined
+		if @_keepaliveInt?
 			clearInterval @_keepaliveInt
-			@_keepaliveInt = undefined
+			@_keepaliveInt = null
 
 	_resetKeepalive: () =>
 		@_stopKeepalive()
