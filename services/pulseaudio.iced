@@ -53,7 +53,6 @@ module.exports = class PulseAudioService extends services.Service
 			proc = spawn pulseaudioPath, [
 				"--start"
 				"--fail=true" # quit on startup failure
-				"--high-priority=true"
 				"--daemonize=false"
 				"-v"
 			], opts
