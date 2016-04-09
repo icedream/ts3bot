@@ -193,7 +193,7 @@ module.exports = class TS3ClientService extends services.Service
 		await ts3settings.query "delete * from Bookmarks", defer()
 
 		# Delete default playback settings to enforce muted playback later on
-		await ts3settings.query "delete * from Profiles where key=\"Playback/Standard\"", defer()
+		await ts3settings.query "delete * from Profiles where key=\"Playback/Default\"", defer()
 
 		# Let's make sure we have an identity!
 		force = ts3settings.getIdentitiesSize() <= 0 or config.get("identity-path")
