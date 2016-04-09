@@ -189,7 +189,7 @@ module.exports = class TS3ClientService extends services.Service
 		ts3settings = new TS3Settings config.get("ts3-config-path")
 		await ts3settings.open defer()
 
-		# Delete bookmars to prevent auto-connect bookmarks from weirding out the client
+		# Delete bookmarks to prevent auto-connect bookmarks from weirding out the client
 		await ts3settings.query "delete * from Bookmarks", defer()
 
 		# Delete default playback settings to enforce muted playback later on
