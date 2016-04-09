@@ -247,19 +247,6 @@ module.exports = class TS3ClientService extends services.Service
 			[ "Plugins", "ts3g15", "false" ]
 			[ "Profiles", "DefaultPlaybackProfile", "" ]
 			[ "Profiles", "Playback/", {} ]
-			###
-			[ "Profiles", "Playback/Default", {
-				Device: ''
-				DeviceDisplayName: "Default"
-				VolumeModifier: -40
-				VolumeFactorWaveDb: -17
-				PlayMicClicksOnOwn: false
-				PlayMicClicksOnOthers: false
-				MonoSoundExpansion: 2
-				Mode: "PulseAudio"
-				PlaybackMonoOverCenterSpeaker: false
-				} ]
-			###
 			[ "Profiles", "DefaultCaptureProfile", "Default" ]
 			[ "Profiles", "Capture/Default", {
 				Device: ''
