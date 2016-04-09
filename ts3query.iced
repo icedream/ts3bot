@@ -121,6 +121,10 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		@_tcpClient.connect @_port, @_host, () =>
 			@emit "open"
 			await @once "message.selected", defer(selectedArgs)
+
+			# send keepalives to avoid connection timeout
+			@_resetKeepalive()
+
 			cb?()
 
 		splitterStream = StreamSplitter("\n\r")
@@ -142,9 +146,6 @@ module.exports = class TS3ClientQuery extends EventEmitter
 				@emit "message.#{response.name}", response.args
 			else
 				@emit "vars", response.args
-
-		# send keepalives to avoid connection timeout
-		@_resetKeepalive()
 
 	_sendKeepalive: (cb) =>
 		@_log.silly "Send: <keep-alive>"
