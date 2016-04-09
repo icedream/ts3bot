@@ -155,9 +155,14 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		if @_keepaliveInt?
 			clearInterval @_keepaliveInt
 			@_keepaliveInt = null
+			@_log.silly "Stopped keep-alive."
+			return
+		@_log.silly "Requested to stop keep-alive sending but it's already stopped!"
 
 	_resetKeepalive: () =>
 		@_stopKeepalive()
+
+		@_log.silly "Setting up keep-alive."
 		@_keepaliveInt = setInterval @_sendKeepalive, 60000
 
 	close: (cb) =>
