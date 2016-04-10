@@ -8,6 +8,7 @@ TS3ClientQuery = require("../ts3query")
 path = require "path"
 merge = require "merge"
 fs = require "fs"
+url = require "url"
 spawn = require("child_process").spawn
 StreamSplitter = require("stream-splitter")
 require_bin = require("../require_bin")
@@ -36,8 +37,14 @@ module.exports = class TS3ClientService extends services.Service
 				cb? null, @process
 				return
 
+			uri = null
 			if not args
 				args = []
+			for v in args
+				if v.indexOf("ts3server:") != 0
+					continue
+				uri = v
+				break
 
 			await fs.access ts3client_binpath, fs.R_OK | fs.X_OK, defer err
 			if err
@@ -45,7 +52,7 @@ module.exports = class TS3ClientService extends services.Service
 				cb? new Error "Access to TeamSpeak3 binary failed."
 				return
 
-			await @_preconfigure defer()
+			await @_preconfigure uri, defer()
 
 			# spawn process
 			proc = null
@@ -185,7 +192,9 @@ module.exports = class TS3ClientService extends services.Service
 
 		cb?()
 
-	_preconfigure: (cb) =>
+	_preconfigure: (uriString, cb) =>
+		uri = url.parse(uriString, true, true) if uriString?
+
 		ts3settings = new TS3Settings config.get("ts3-config-path")
 		await ts3settings.open defer()
 
@@ -269,6 +278,21 @@ module.exports = class TS3ClientService extends services.Service
 			[ "Statistics", "ParticipateStatistics", "0" ]
 			[ "Statistics", "ConfirmedParticipation", "1" ]
 		], defer()
+
+		if uri?
+			bookmarkId = "{5125344e-45ec-4510-9bbf-8b940628c5d0}"
+			await ts3settings.set "Bookmarks", bookmarkId, {
+				Name: uriString
+				Address: uri.host or "localhost"
+				Port: uri.port or 9987
+				CaptureProfile: "Default"
+				PlaybackProfile: ""
+				Identity: "Standard"
+				Nick: uri.nickname or config.get("nickname") or "TS3Bot"
+				Autoconnect: false
+				ShowServerQueryClients: false
+				Uuid: bookmarkId
+				}, defer()
 
 		await ts3settings.close defer()
 
