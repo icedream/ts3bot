@@ -61,6 +61,7 @@ The main repository for the source code of the bot is available at [https://gith
 
 ## Planned features
 
+- Web interface
 - Timestamping/skip intros (ts3bot-control issue [#3](https://github.com/icedream/ts3bot-control/issues/3))
 - Volume adjustment (ts3bot-control issue [#5](https://github.com/icedream/ts3bot-control/issues/5))
 - Playlisting (ts3bot-control issue [#2](https://github.com/icedream/ts3bot-control/issues/2))
