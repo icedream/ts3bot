@@ -281,7 +281,7 @@ module.exports = class TS3ClientService extends services.Service
 
 		if uri?
 			bookmarkId = "{5125344e-45ec-4510-9bbf-8b940628c5d0}"
-			await ts3settings.set "Bookmarks", bookmarkId, {
+			bookmarkData =
 				Name: uriString
 				Address: uri.host or "localhost"
 				Port: uri.port or 9987
@@ -292,7 +292,8 @@ module.exports = class TS3ClientService extends services.Service
 				Autoconnect: false
 				ShowServerQueryClients: false
 				Uuid: bookmarkId
-				}, defer()
+			bookmarkData.ServerUID = uri.query?.server_uid if uri.query?.server_uid?
+			await ts3settings.set "Bookmarks", bookmarkId, bookmarkData, defer()
 
 		await ts3settings.close defer()
 
