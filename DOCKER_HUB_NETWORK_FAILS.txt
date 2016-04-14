@@ -1,4 +1,0 @@
-# This text file is just a counter for how often Docker Hub failed to build our image for TS3Bot due to networking issues since Oct 19, 2015.
-# This became necessary to retrigger the build just for the current branch instead of having to trigger the build from Docker Hub for ALL branches instead.
-# Let's hope this counter will never reach 100...
-2
