@@ -31,7 +31,7 @@ rm ./ts3client.run
 
 # Install TS3Bot via Git
 npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" \
-	npm install --unsafe-perm -g "https://github.com/icedream/ts3bot-control#${TS3BOT_COMMIT}"
+	npm link --unsafe-perm ~app/src
 
 # Fix for youtube-dl
 chmod a+rx "$(dirname "$(readlink -f "$(which ts3bot)")")/node_modules/youtube-dl/bin/youtube-dl"

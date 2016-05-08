@@ -10,7 +10,9 @@ RUN mkdir -p /tmp/empty &&\
 	rmdir /tmp/empty
 
 ADD setup.sh /
-RUN sh /setup.sh
+COPY src/ /home/app/src/
+RUN sed -i 's,\r,,g' /setup.sh &&\
+	sh /setup.sh
 
 # Copy over configuration for other daemons
 COPY etc/ /etc

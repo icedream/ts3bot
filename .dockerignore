@@ -1,6 +1,7 @@
 .git
-.gitignore
-node_modules
-*.log
-*.ini
-*.md
+**/.gitignore
+Dockerfile
+src/node_modules
+**/*.log
+**/*.ini
+**/*.md
