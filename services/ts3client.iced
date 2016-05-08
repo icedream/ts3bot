@@ -283,7 +283,7 @@ module.exports = class TS3ClientService extends services.Service
 			bookmarkId = "{5125344e-45ec-4510-9bbf-8b940628c5d0}"
 			bookmarkData =
 				Name: uriString
-				Address: uri.host or "localhost"
+				Address: uri.hostname or "localhost"
 				Port: uri.port or 9987
 				CaptureProfile: "Default"
 				PlaybackProfile: ""
