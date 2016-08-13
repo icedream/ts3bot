@@ -33,8 +33,11 @@ rm ./ts3client.run
 npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" \
 	npm link --unsafe-perm ~app/src
 
-# Fix for youtube-dl
-chmod a+rx "$(dirname "$(readlink -f "$(which ts3bot)")")/node_modules/youtube-dl/bin/youtube-dl"
+# Replace the shipped youtube-dl with the latest version (this is a hack that will hopefully be fixed soon!)
+wget -O/usr/local/bin/youtube-dl "https://yt-dl.org/downloads/latest/youtube-dl"
+rm -f "$(dirname "$(readlink -f "$(which ts3bot)")")/node_modules/youtube-dl/bin/youtube-dl"
+ln -sf "/usr/local/bin/youtube-dl" "$(dirname "$(readlink -f "$(which ts3bot)")")/node_modules/youtube-dl/bin/youtube-dl"
+chmod a+rx "/usr/local/bin/youtube-dl"
 
 # Clean up APT
 apt-get autoremove -y --purge wget cmake cmake-data
