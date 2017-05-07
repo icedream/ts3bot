@@ -1,7 +1,6 @@
 FROM node:6.3.1
 
 ARG TS3CLIENT_VERSION=3.0.19.4
-ARG TS3BOT_COMMIT=4ab1de5a5e5f969982b114713cac35265fda6ef0
 
 # Add "app" user
 RUN mkdir -p /tmp/empty &&\
