@@ -43,7 +43,7 @@ initialized_loggers = []
 module.exports = (name, options) =>
 	if not(name in initialized_loggers)
 		logger = container.add name
-		logger.addFilter (msg, meta, level) => "[#{name}] #{msg}"
+		logger.filters.push (level, msg, meta) => "[#{name}] #{msg}"
 		initialized_loggers.push name
 		return logger
 

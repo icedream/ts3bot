@@ -32,8 +32,8 @@
     "merge": "^1.2.0",
     "mkdirp": "^0.5.1",
     "named-regexp": "^0.1.1",
-    "nconf": "^0.7.2",
-    "npm-which": "^2.0.0",
+    "nconf": "^0.8.4",
+    "npm-which": "^3.0.1",
     "parse-duration": "^0.1.1",
     "password-generator": "^2.0.1",
     "pretty-ms": "^2.1.0",
@@ -46,9 +46,9 @@
     "sync": "^0.2.5",
     "temp": "^0.8.3",
     "valid-url": "^1.0.9",
-    "webchimera.js": "^0.1.38",
+    "webchimera.js": "^0.2.7",
     "which": "^1.1.2",
-    "winston": "^1.0.1",
+    "winston": "^2.3.1",
     "xvfb": "git://github.com/icedream/node-xvfb.git",
     "youtube-dl": "^1.10.5"
   }
