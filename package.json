@@ -22,6 +22,7 @@
   ],
   "scripts": {
     "iced2es": "iced3 -I none -b --no-header -o src.js -c src && lebab -t let,multi-var,for-each,arg-rest,arg-spread,obj-method,obj-shorthand,no-strict,exponent,template,default-param,includes,class --replace src.js",
+    "lint": "eslint --fix .",
     "es2017-node7": "babel src.js --presets es2017-node7 --source-maps --out-dir ./dist/node7",
     "build": "npm run iced2es && npm run es2017-node7",
     "prepublish": "npm run build",
@@ -62,6 +63,11 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2017-node7": "^0.5.2",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.0.1",
     "iced-coffee-script-3": "^111.1.1",
     "lebab": "^2.7.2"
   },
