@@ -86,6 +86,7 @@ module.exports = class TS3ClientService extends services.Service
 			doStart = () =>
 				env =
 					HOME: process.env.HOME
+					USERPROFILE: process.env.USERPROFILE
 					DISPLAY: process.env.DISPLAY
 					XDG_RUNTIME_DIR: process.env.XDG_RUNTIME_DIR
 					KDEDIRS: ''

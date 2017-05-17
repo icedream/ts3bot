@@ -42,6 +42,7 @@ module.exports = class XWindowManagerService extends services.Service
 						DISPLAY: process.env.DISPLAY
 						XDG_RUNTIME_DIR: process.env.XDG_RUNTIME_DIR
 						HOME: process.env.HOME
+						USERPROFILE: process.env.USERPROFILE
 
 				# logging
 				stdoutTokenizer = proc.stdout.pipe StreamSplitter "\n"

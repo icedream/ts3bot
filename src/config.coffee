@@ -2,13 +2,14 @@ import nconf from 'nconf'
 import path from 'path'
 import merge from 'merge'
 import pwgen from 'password-generator'
+import { homedir } from 'os'
 
 console.log "Loading configuration..."
 
 # Build configuration object from input
 nconf.env [ "NODE_ENV", "PULSE_BINARY" ]
 nconf.argv()
-nconf.file path.join(process.env["HOME"], ".ts3bot", "config.json")
+nconf.file path.join(homedir(), ".ts3bot", "config.json")
 nconf.defaults
 	# read http://stackoverflow.com/q/12252043 on why I'm using .trim here
 	"environment": process.env.NODE_ENV?.trim() or "development"
@@ -18,7 +19,7 @@ nconf.defaults
 	"vlc-password": pwgen()
 	"nickname": "TS3Bot"
 	"ts3-install-path": path.resolve __dirname, "..", "ts3client"
-	"ts3-config-path": path.join process.env.HOME, ".ts3client"
+	"ts3-config-path": path.join homedir(), ".ts3client"
 	"xvfb-resolution": "800x600x16"
 	"console-log-level": "info"
 	"file-log-level": "debug"

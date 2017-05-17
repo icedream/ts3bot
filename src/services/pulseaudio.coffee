@@ -1,5 +1,6 @@
 import { spawn } from 'child_process'
 import StreamSplitter from 'stream-splitter'
+import { homedir } from 'os'
 
 import getLogger from '../logger'
 import services from '../services'
@@ -38,6 +39,7 @@ module.exports = class PulseAudioService extends services.Service
 				env:
 					DISPLAY: process.env.DISPLAY
 					HOME: process.env.HOME
+					USERPROFILE: process.env.USERPROFILE
 					XDG_RUNTIME_DIR: process.env.XDG_RUNTIME_DIR
 
 			# check if there is already a daemon running
