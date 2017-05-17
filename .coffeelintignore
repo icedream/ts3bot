@@ -1,0 +1,8 @@
+.git*
+.docker*
+
+etc
+node_modules
+
+dist
+src.js

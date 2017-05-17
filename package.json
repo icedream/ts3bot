@@ -63,6 +63,13 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2017-node7": "^0.5.2",
+    "coffeelint": "^1.16.0",
+    "coffeelint-config-groupon": "^4.1.0",
+    "coffeelint-forbidden-keywords": "~0.1.1",
+    "coffeelint-no-mocha-only": "^1.0.0",
+    "coffeelint-use-strict": "^1.0.0",
+    "coffeescope2": "~0.4.2",
+    "dummy-transform": "file:./util/dummy-transform",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.2.0",
