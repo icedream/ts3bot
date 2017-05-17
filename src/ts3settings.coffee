@@ -1,17 +1,17 @@
-sqlite3 = require("sqlite3") #.verbose()
-SQLite3Database = sqlite3.Database
-path = require "path"
-mkdirp = require "mkdirp"
-SimpleIni = require "simple-ini"
-fs = require "fs"
-merge = require "merge"
-getLogger = require "./logger"
+import sqlite3, { Database as SQLite3Database } from 'sqlite3'
+import path from 'path'
+import mkdirp from 'mkdirp'
+import SimpleIni from 'simple-ini'
+import fs from 'fs'
+import merge from 'merge'
+
+import getLogger from './logger'
 
 # some properties sugar from http://bl.ocks.org/joyrexus/65cb3780a24ecd50f6df
 Function::getter = (prop, get) ->
-  Object.defineProperty @prototype, prop, {get, configurable: yes}
+	Object.defineProperty @prototype, prop, {get, configurable: yes}
 Function::setter = (prop, set) ->
-  Object.defineProperty @prototype, prop, {set, configurable: yes}
+	Object.defineProperty @prototype, prop, {set, configurable: yes}
 
 module.exports = class SettingsFile
 	db: null
@@ -26,21 +26,28 @@ module.exports = class SettingsFile
 		catch err
 			throw new Error "Could not create TS3 config directory."
 
-	@getter "isInitialized", -> () => fs.existsSync(path.join(@configPath, "settings.db")) and fs.existsSync(path.join(@configPath, "ts3clientui_qt.secrets.conf"))
-	@getter "isReady", -> () => @db != null
+	@getter "isInitialized", ->
+		() =>
+			fs.existsSync(path.join(@configPath, "settings.db")) and
+				fs.existsSync(path.join(@configPath, "ts3clientui_qt.secrets.conf"))
+	@getter "isReady", ->
+		() =>
+			@db != null
 
 	open: (cb) =>
 		# settings database
 		@db = new SQLite3Database path.join(@configPath, "settings.db")
 		await @db.serialize defer()
-		await @query "CREATE TABLE IF NOT EXISTS TS3Tables (key varchar NOT NULL UNIQUE,timestamp integer unsigned NOT NULL)", defer()
+		await @query "CREATE TABLE IF NOT EXISTS TS3Tables "+
+			"(key varchar NOT NULL UNIQUE,timestamp integer unsigned NOT NULL)",
+			defer()
 
 		# secrets file
 		@identities = []
 		@defaultIdentity = null
 		secretsPath = path.join(@configPath, "ts3clientui_qt.secrets.conf")
 		if fs.existsSync(secretsPath)
-			secrets = new SimpleIni (() => fs.readFileSync(secretsPath, "utf-8")),
+			secrets = new SimpleIni (-> fs.readFileSync(secretsPath, "utf-8")),
 				quotedValues: false
 			for i in [1 .. secrets.Identities.size]
 				@identities.push
@@ -75,7 +82,8 @@ module.exports = class SettingsFile
 
 		# Generate INI content
 		await secrets.save defer(iniText)
-		fs.writeFileSync path.join(@configPath, "ts3clientui_qt.secrets.conf"), iniText
+		fs.writeFileSync path.join(@configPath, "ts3clientui_qt.secrets.conf"),
+			iniText
 
 		@identities = null
 		@defaultIdentity = null
@@ -98,7 +106,9 @@ module.exports = class SettingsFile
 		if not table
 			throw new Error "Need table"
 
-		await @query "create table if not exists #{table} (timestamp integer unsigned NOT NULL, key varchar NOT NULL UNIQUE, value varchar)", defer()
+		await @query "create table if not exists #{table} "+
+			"(timestamp integer unsigned NOT NULL, key varchar NOT NULL UNIQUE, "+
+			"value varchar)", defer()
 
 		if not key
 			return
@@ -112,11 +122,13 @@ module.exports = class SettingsFile
 
 		timestamp = Math.round (new Date).getTime() / 1000
 
-		stmt = @db.prepare "insert or replace into TS3Tables (key, timestamp) values (?, ?)"
+		stmt = @db.prepare "insert or replace into TS3Tables (key, timestamp) "+
+			"values (?, ?)"
 		stmt.run table, timestamp
 		await stmt.finalize defer()
 
-		stmt = @db.prepare "insert or replace into #{table} (timestamp, key, value) values (?, ?, ?)"
+		stmt = @db.prepare "insert or replace into #{table} (timestamp, key, value) "+
+			"values (?, ?, ?)"
 		stmt.run timestamp, key, value
 		await stmt.finalize defer()
 
@@ -141,7 +153,7 @@ module.exports = class SettingsFile
 		@log.info "Importing identity from #{identityFilePath}..."
 
 		# open identity file
-		idFile = new SimpleIni (() => fs.readFileSync(identityFilePath, "utf-8")),
+		idFile = new SimpleIni (-> fs.readFileSync(identityFilePath, "utf-8")),
 			quotedValues: true
 		importedIdentity = {}
 		for own k, v of idFile.Identity

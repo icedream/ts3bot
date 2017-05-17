@@ -1,9 +1,10 @@
-Xvfb = require("xvfb")
-log = require("../logger")("Xvfb")
-config = require("../config")
-services = require("../services")
-require_bin = require("../require_bin")
+import Xvfb from 'xvfb'
+import getLogger from '../logger'
+import config from '../config'
+import services from '../services'
+import require_bin from '../require_bin'
 
+log = getLogger "Xvfb"
 xvfbPath = require_bin "Xvfb", false
 
 module.exports = class XvfbService extends services.Service

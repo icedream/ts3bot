@@ -1,11 +1,11 @@
-Sync = require "sync"
+import Sync from 'sync'
+import { EventEmitter } from 'events'
+import merge from 'merge'
 
-getLogger = require "./logger"
-EventEmitter = require("events").EventEmitter
-merge = require "merge"
-services = require "./services"
+import getLogger from './logger'
+import services from './services'
 
-module.exports = class Service extends EventEmitter
+class Service extends EventEmitter
 	constructor: (@name, funcs) ->
 		@log = getLogger @name
 		@_funcs = funcs
@@ -152,3 +152,5 @@ module.exports = class Service extends EventEmitter
 		cb? err
 
 	restartSync: () => Sync () => @restart.sync @
+
+module.exports = Service

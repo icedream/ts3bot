@@ -1,8 +1,9 @@
-winston = require "winston"
-path = require "path"
-config = require "./config"
-merge = require "merge"
-winstonCommon = require "winston/lib/winston/common"
+import winston from 'winston'
+import path from 'path'
+import merge from 'merge'
+import winstonCommon from 'winston/lib/winston/common'
+
+import config from './config'
 
 winston.emitErrs = true
 
@@ -40,10 +41,10 @@ container = new (winston.Container)
 
 initialized_loggers = []
 
-module.exports = (name, options) =>
+module.exports = (name, options) ->
 	if not(name in initialized_loggers)
 		logger = container.add name
-		logger.filters.push (level, msg, meta) => "[#{name}] #{msg}"
+		logger.filters.push (level, msg, meta) -> "[#{name}] #{msg}"
 		initialized_loggers.push name
 		return logger
 

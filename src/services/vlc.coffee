@@ -1,8 +1,9 @@
-spawn = require("child_process").spawn
-services = require("../services")
-config = require("../config")
-wc = require("webchimera.js")
-StreamSplitter = require("stream-splitter")
+import { spawn } from 'child_process'
+import wc from 'webchimera.js'
+import StreamSplitter from 'stream-splitter'
+
+import services from '../services'
+import config from '../config'
 
 module.exports = class VLCService extends services.Service
 	dependencies: [
@@ -42,4 +43,3 @@ module.exports = class VLCService extends services.Service
 			@_instance = null
 
 			cb?()
-

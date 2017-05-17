@@ -1,17 +1,20 @@
-xvfb = require("xvfb")
-log = require("../logger")("TS3Client")
-config = require("../config")
-services = require("../services")
-x11tools = require("../x11")
-TS3Settings = require("../ts3settings")
-TS3ClientQuery = require("../ts3query")
-path = require "path"
-merge = require "merge"
-fs = require "fs"
-url = require "url"
-spawn = require("child_process").spawn
-StreamSplitter = require("stream-splitter")
-require_bin = require("../require_bin")
+import xvfb from 'xvfb'
+import path from 'path'
+import merge from 'merge'
+import fs from 'fs'
+import url from 'url'
+import { spawn } from 'child_process'
+import StreamSplitter from 'stream-splitter'
+
+import getLogger from '../logger'
+import config from '../config'
+import services from '../services'
+import x11tools from '../x11'
+import TS3Settings from '../ts3settings'
+import TS3ClientQuery from '../ts3query'
+import require_bin from '../require_bin'
+
+log = getLogger "TS3Client"
 
 ts3client_binpath = require_bin path.join(config.get("ts3-install-path"), "ts3client_linux_" + (if process.arch == "x64" then "amd64" else process.arch))
 
@@ -57,7 +60,7 @@ module.exports = class TS3ClientService extends services.Service
 			# spawn process
 			proc = null
 			doStart = null
-			forwardLog = (token) =>
+			forwardLog = (token) ->
 				token = token.trim() # get rid of \r
 				if token.indexOf("|") > 0
 					token = token.split("|")
@@ -92,7 +95,7 @@ module.exports = class TS3ClientService extends services.Service
 					LD_LIBRARY_PATH: config.get("ts3-install-path")
 				if process.env.LD_LIBRARY_PATH
 					env.LD_LIBRARY_PATH += ":#{process.env.LD_LIBRARY_PATH}"
-				
+
 				@log.silly "Environment variables:", env
 				@log.silly "Arguments:", JSON.stringify args
 
@@ -106,11 +109,11 @@ module.exports = class TS3ClientService extends services.Service
 
 				# logging
 				stdoutTokenizer = proc.stdout.pipe StreamSplitter "\n"
-				stdoutTokenizer.encoding = "utf8";
+				stdoutTokenizer.encoding = "utf8"
 				stdoutTokenizer.on "token", forwardLog
 
 				stderrTokenizer = proc.stderr.pipe StreamSplitter "\n"
-				stderrTokenizer.encoding = "utf8";
+				stderrTokenizer.encoding = "utf8"
 				stderrTokenizer.on "token", forwardLog
 
 				# connect to client query plugin when it's loaded

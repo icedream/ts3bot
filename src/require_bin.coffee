@@ -1,8 +1,11 @@
-which = require("which").sync
-path = require "path"
-log = require("./logger")("RequireBin")
+import { sync as which } from 'which'
+import path from 'path'
 
-module.exports = (binName, doErrorIfNotFound) =>
+import getLogger from './logger'
+
+log = getLogger "RequireBin"
+
+module.exports = (binName, doErrorIfNotFound) ->
 	doErrorIfNotFound = true unless doErrorIfNotFound?
 
 	# check if xvfb is findable from here

@@ -1,8 +1,11 @@
-spawn = require("child_process").spawn
-log = require("../logger")("XWindowManager")
-services = require("../services")
-StreamSplitter = require("stream-splitter")
-require_bin = require("../require_bin")
+import { spawn } from 'child_process'
+import StreamSplitter from 'stream-splitter'
+
+import getLogger from '../logger'
+import services from '../services'
+import require_bin from '../require_bin'
+
+log = getLogger "XWindowManager"
 
 xwmBinPath = require_bin "x-window-manager", false
 
@@ -42,13 +45,13 @@ module.exports = class XWindowManagerService extends services.Service
 
 				# logging
 				stdoutTokenizer = proc.stdout.pipe StreamSplitter "\n"
-				stdoutTokenizer.encoding = "utf8";
+				stdoutTokenizer.encoding = "utf8"
 				stdoutTokenizer.on "token", (token) =>
 					token = token.trim() # get rid of \r
 					@log.debug token
 
 				stderrTokenizer = proc.stderr.pipe StreamSplitter "\n"
-				stderrTokenizer.encoding = "utf8";
+				stderrTokenizer.encoding = "utf8"
 				stderrTokenizer.on "token", (token) =>
 					token = token.trim() # get rid of \r
 					@log.warn token

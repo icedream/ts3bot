@@ -1,16 +1,16 @@
-require "string.prototype.startswith"
+import 'string.prototype.startswith'
 
-net = require "net"
-getLogger = require "./logger"
-StringDecoder = require("string_decoder").StringDecoder
-StreamSplitter = require "stream-splitter"
-events = require "events"
-EventEmitter = events.EventEmitter
-merge = require "merge"
+import net from 'net'
+import { StringDecoder } from 'string_decoder'
+import StreamSplitter from 'stream-splitter'
+import { EventEmitter } from 'events'
+import merge from 'merge'
+
+import getLogger from './logger'
 
 parserLog = getLogger "parser"
 
-escape = (value) => value.toString()\
+escape = (value) -> value.toString()\
 	.replace(/\\/g, "\\\\")\
 	.replace(/\//g, "\\/")\
 	.replace(/\|/g, "\\p")\
@@ -19,7 +19,7 @@ escape = (value) => value.toString()\
 	.replace(/\t/g, "\\t")\
 	.replace(/\ /g, "\\s")
 
-unescape = (value) => value.toString()\
+unescape = (value) -> value.toString()\
 	.replace(/\\s/g, " ")\
 	.replace(/\\t/g, "\t")\
 	.replace(/\\r/g, "\r")\
@@ -28,7 +28,7 @@ unescape = (value) => value.toString()\
 	.replace(/\\\//g, "/")\
 	.replace(/\\\\/g, "\\")
 
-buildCmd = (name, namedArgs, posArgs) =>
+buildCmd = (name, namedArgs, posArgs) ->
 	# TODO: Add support for collected arguments (aka lists)
 	if not name
 		throw new Error "Need command name"
@@ -52,7 +52,7 @@ buildCmd = (name, namedArgs, posArgs) =>
 			param += "#{escape(v)}"
 	param + "\n\r"
 
-parseCmd = (str) =>
+parseCmd = (str) ->
 	params = str.split " "
 
 	startIndex = 0
@@ -92,7 +92,7 @@ parseCmd = (str) =>
 		args: collectedArgs
 	}
 
-checkError = (err) =>
+checkError = (err) ->
 	err.id = parseInt err.id
 	if err.id == 0
 		return null
@@ -150,7 +150,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	_sendKeepalive: (cb) =>
 		@_log.silly "Send: <keep-alive>"
 
-		@_tcpClient.write "\n\r", "utf8", () => cb?()
+		@_tcpClient.write "\n\r", "utf8", () -> cb?()
 
 	_stopKeepalive: () =>
 		if @_keepaliveInt?
@@ -191,37 +191,37 @@ module.exports = class TS3ClientQuery extends EventEmitter
 
 		@_log.silly "Send:", text.trim()
 
-		@_tcpClient.write text, "utf8", () => cb?()
+		@_tcpClient.write text, "utf8", () -> cb?()
 		@_resetKeepalive()
 
-	banadd: (cb) =>
+	banadd: (cb) ->
 		throw new Error "Not implemented yet"
 
-	banclient: (cb) =>
+	banclient: (cb) ->
 		throw new Error "Not implemented yet"
 
-	bandel: (cb) =>
+	bandel: (cb) ->
 		throw new Error "Not implemented yet"
 
-	bandelall: (cb) =>
+	bandelall: (cb) ->
 		throw new Error "Not implemented yet"
 
-	banlist: (cb) =>
+	banlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channeladdperm: (cb) =>
+	channeladdperm: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelclientaddperm: (cb) =>
+	channelclientaddperm: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelclientdelperm: (cb) =>
+	channelclientdelperm: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelclientlist: (cb) =>
+	channelclientlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelclientpermlist: (cb) =>
+	channelclientpermlist: (cb) ->
 		throw new Error "Not implemented yet"
 
 	###
@@ -234,8 +234,8 @@ module.exports = class TS3ClientQuery extends EventEmitter
 			cb = cid
 			cid = null
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "channelconnectinfo",
 			cid: cid
 
@@ -254,70 +254,70 @@ module.exports = class TS3ClientQuery extends EventEmitter
 			channel_properties = {}
 		channel_properties["channel_name"] = channel_name
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "channelcreate", channel_properties
 
-	channeldelete: (cb) =>
+	channeldelete: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channeldelperm: (cb) =>
+	channeldelperm: (cb) ->
 		throw new Error "Not implemented yet"
 
 	###
 	Changes a channels configuration using given properties.
 	###
 	channeledit: (cid, channel_properties, cb) =>
-		@once "message.error", (args) => cb? checkError(args)
+		@once "message.error", (args) -> cb? checkError(args)
 		@send "channeledit", merge true, channel_properties,
 			cid: cid
 
-	channelgroupadd: (cb) =>
+	channelgroupadd: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelgroupaddperm: (cb) =>
+	channelgroupaddperm: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelgroupclientlist: (cb) =>
+	channelgroupclientlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelgroupdel: (cb) =>
+	channelgroupdel: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelgroupdelperm: (cb) =>
+	channelgroupdelperm: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelgrouplist: (cb) =>
+	channelgrouplist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelgrouppermlist: (cb) =>
+	channelgrouppermlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channellist: (cb) =>
+	channellist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelmove: (cb) =>
+	channelmove: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelpermlist: (cb) =>
+	channelpermlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	channelvariable: (cb) =>
+	channelvariable: (cb) ->
 		throw new Error "Not implemented yet"
 
-	clientaddperm: (cb) =>
+	clientaddperm: (cb) ->
 		throw new Error "Not implemented yet"
 
-	clientdbdelete: (cb) =>
+	clientdbdelete: (cb) ->
 		throw new Error "Not implemented yet"
 
-	clientdbedit: (cb) =>
+	clientdbedit: (cb) ->
 		throw new Error "Not implemented yet"
 
-	clientdblist: (cb) =>
+	clientdblist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	clientdelperm: (cb) =>
+	clientdelperm: (cb) ->
 		throw new Error "Not implemented yet"
 
 	###
@@ -325,8 +325,8 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	###
 	clientgetdbidfromuid: (cluid, cb) =>
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientgetdbidfromuid",
 			cluid: cluid
 
@@ -335,30 +335,30 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	###
 	clientgetids: (cb) =>
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientgetids",
 			cluid: cluid
 
 	###
-	Displays the unique identifier and nickname matching the database ID specified 
+	Displays the unique identifier and nickname matching the database ID specified
 	by cldbid.
 	###
 	clientgetnamefromdbid: (cldbid, cb) =>
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientgetnamefromdbid",
 			cldbid: cldbid
 
 	###
-	Displays the database ID and nickname matching the unique identifier specified 
+	Displays the database ID and nickname matching the unique identifier specified
 	by cluid.
 	###
 	clientgetnamefromuid: (cluid, cb) =>
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientgetnamefromuid",
 			cluid: cluid
 
@@ -368,15 +368,15 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	###
 	clientgetuidfromclid: (clid, cb) =>
 		retval = { }
-		@once "notifyclientuidfromclid", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "notifyclientuidfromclid", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientgetuidfromclid",
 			clid: clid
 
 	###
-	Kicks one or more clients specified with clid from their currently joined 
-	channel or from the server, depending on reasonid. The reasonmsg parameter 
-	specifies a text message sent to the kicked clients. This parameter is optional 
+	Kicks one or more clients specified with clid from their currently joined
+	channel or from the server, depending on reasonid. The reasonmsg parameter
+	specifies a text message sent to the kicked clients. This parameter is optional
 	and may only have a maximum of 40 characters.
 
 	Available reasonid values are:
@@ -391,7 +391,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		if typeof clid == "function"
 			cb = clid
 			clid = null
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientkick",
 			reasonid: reasonid
 			reasonmsg: reasonmsg
@@ -449,14 +449,14 @@ module.exports = class TS3ClientQuery extends EventEmitter
 			cleanedModifiers.push v
 
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientlist", cleanedModifiers
 
-	clientmove: (cb) =>
+	clientmove: (cb) ->
 		throw new Error "Not implemented yet"
 
-	clientmute: (cb) =>
+	clientmute: (cb) ->
 		throw new Error "Not implemented yet"
 
 	###
@@ -501,7 +501,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	  notifyconnectstatuschange
 	###
 	clientnotifyregister: (schandlerid, event, cb) =>
-		@once "message.error", (args) => cb? checkError(args)
+		@once "message.error", (args) -> cb? checkError(args)
 		@send "clientnotifyregister",
 			schandlerid: schandlerid
 			event: event
@@ -510,7 +510,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	Unregisters from all previously registered client notifications.
 	###
 	clientnotifyunregister: (cb) =>
-		@once "message.error", (args) => cb? checkError(args)
+		@once "message.error", (args) -> cb? checkError(args)
 		@send "clientnotifyunregister"
 
 	###
@@ -518,8 +518,8 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	###
 	clientpermlist: (cldbid, cb) =>
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientpermlist",
 			cldbid: cldbid
 
@@ -530,12 +530,12 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		if typeof msg == "function"
 			cb = msg
 			msg = null
-		@once "message.error", (args) => cb? checkError(args)
+		@once "message.error", (args) -> cb? checkError(args)
 		@send "clientpoke",
 			msg: msg
 			clid: clid
 
-	clientunmute: (cb) =>
+	clientunmute: (cb) ->
 		throw new Error "Not implemented yet"
 
 	###
@@ -558,7 +558,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	                             connect
 	###
 	clientupdate: (idents, cb) =>
-		@once "message.error", (args) => cb? checkError(args)
+		@once "message.error", (args) -> cb? checkError(args)
 		@send "clientupdate", idents
 
 	###
@@ -624,20 +624,20 @@ module.exports = class TS3ClientQuery extends EventEmitter
 		if not Array.isArray variables
 			throw new Error "variables needs to be an array of requested client variables."
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "clientvariable", { clid: clid }, variables
 
-	complainadd: (cb) =>
+	complainadd: (cb) ->
 		throw new Error "Not implemented yet"
 
-	complaindel: (cb) =>
+	complaindel: (cb) ->
 		throw new Error "Not implemented yet"
 
-	complaindelall: (cb) =>
+	complaindelall: (cb) ->
 		throw new Error "Not implemented yet"
 
-	complainlist: (cb) =>
+	complainlist: (cb) ->
 		throw new Error "Not implemented yet"
 
 	###
@@ -645,70 +645,70 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	###
 	currentschandlerid: (cb) =>
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "currentschandlerid"
 
-	disconnect: (cb) => close(cb)
+	disconnect: (cb) -> close(cb)
 
-	exam: (cb) =>
+	exam: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftcreatedir: (cb) =>
+	ftcreatedir: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftdeletefile: (cb) =>
+	ftdeletefile: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftgetfileinfo: (cb) =>
+	ftgetfileinfo: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftgetfilelist: (cb) =>
+	ftgetfilelist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftinitdownload: (cb) =>
+	ftinitdownload: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftinitupload: (cb) =>
+	ftinitupload: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftlist: (cb) =>
+	ftlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftrenamefile: (cb) =>
+	ftrenamefile: (cb) ->
 		throw new Error "Not implemented yet"
 
-	ftstop: (cb) =>
+	ftstop: (cb) ->
 		throw new Error "Not implemented yet"
 
-	hashpassword: (cb) =>
+	hashpassword: (cb) ->
 		throw new Error "Not implemented yet"
 
-	help: (cb) =>
+	help: (cb) ->
 		throw new Error "Not implemented yet"
 
-	messageadd: (cb) =>
+	messageadd: (cb) ->
 		throw new Error "Not implemented yet"
 
-	messagedel: (cb) =>
+	messagedel: (cb) ->
 		throw new Error "Not implemented yet"
 
-	messageget: (cb) =>
+	messageget: (cb) ->
 		throw new Error "Not implemented yet"
 
-	messagelist: (cb) =>
+	messagelist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	messageupdateflag: (cb) =>
+	messageupdateflag: (cb) ->
 		throw new Error "Not implemented yet"
 
-	permoverview: (cb) =>
+	permoverview: (cb) ->
 		throw new Error "Not implemented yet"
 
-	quit: (cb) => close(cb)
+	quit: (cb) -> close(cb)
 
 	###
-	Sends a text message a specified target. The type of the target is determined 
+	Sends a text message a specified target. The type of the target is determined
 	by targetmode.
 	Available targetmodes are:
 	1: Send private text message to a client. You must specify the target parameter
@@ -720,61 +720,61 @@ module.exports = class TS3ClientQuery extends EventEmitter
 			cb = msg
 			msg = target
 			target = null
-		@once "message.error", (args) => cb? checkError(args)
+		@once "message.error", (args) -> cb? checkError(args)
 		@send "sendtextmessage",
 			targetmode: targetmode
 			target: target
 			msg: msg
 
-	serverconnectinfo: (cb) =>
+	serverconnectinfo: (cb) ->
 		throw new Error "Not implemented yet"
 
-	serverconnectionhandlerlist: (cb) =>
+	serverconnectionhandlerlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergroupadd: (cb) =>
+	servergroupadd: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergroupaddclient: (cb) =>
+	servergroupaddclient: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergroupaddperm: (cb) =>
+	servergroupaddperm: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergroupclientlist: (cb) =>
+	servergroupclientlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergroupdel: (cb) =>
+	servergroupdel: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergroupdelclient: (cb) =>
+	servergroupdelclient: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergroupdelperm: (cb) =>
+	servergroupdelperm: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergrouplist: (cb) =>
+	servergrouplist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergrouppermlist: (cb) =>
+	servergrouppermlist: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servergroupsbyclientid: (cb) =>
+	servergroupsbyclientid: (cb) ->
 		throw new Error "Not implemented yet"
 
-	servervariable: (cb) =>
+	servervariable: (cb) ->
 		throw new Error "Not implemented yet"
 
-	setclientchannelgroup: (cb) =>
+	setclientchannelgroup: (cb) ->
 		throw new Error "Not implemented yet"
 
-	tokenadd: (cb) =>
+	tokenadd: (cb) ->
 		throw new Error "Not implemented yet"
 
-	tokendelete: (cb) =>
+	tokendelete: (cb) ->
 		throw new Error "Not implemented yet"
 
-	tokenlist: (cb) =>
+	tokenlist: (cb) ->
 		throw new Error "Not implemented yet"
 
 	###
@@ -782,7 +782,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	server will automatically delete the token after it has been used.
 	###
 	tokenuse: (token, cb) =>
-		@once "message.error", (args) => cb? checkError(args)
+		@once "message.error", (args) -> cb? checkError(args)
 		@send "tokenuse",
 			token: token
 
@@ -792,12 +792,12 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	###
 	use: (schandlerid, cb) =>
 		retval = { }
-		@once "message.selected", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "message.selected", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "use",
 			schandlerid: schandlerid
 
-	verifychannelpassword: (cb) =>
+	verifychannelpassword: (cb) ->
 		throw new Error "Not implemented yet"
 
 	###
@@ -805,7 +805,7 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	incorrect.
 	###
 	verifyserverpassword: (password, cb) =>
-		@once "message.error", (args) => cb? checkError(args)
+		@once "message.error", (args) -> cb? checkError(args)
 		@send "verifyserverpassword",
 			password: password
 
@@ -818,6 +818,6 @@ module.exports = class TS3ClientQuery extends EventEmitter
 	###
 	whoami: (cb) =>
 		retval = { }
-		@once "vars", (args) => merge retval, args
-		@once "message.error", (args) => cb? checkError(args), retval
+		@once "vars", (args) -> merge retval, args
+		@once "message.error", (args) -> cb? checkError(args), retval
 		@send "whoami"

@@ -1,5 +1,5 @@
-parseDuration = require "parse-duration"
-namedRegex = require("named-regexp").named
+import parseDuration from 'parse-duration'
+import { named as namedRegex } from 'named-regexp'
 
 durationRegex = namedRegex /^(((:<h>[0-9]{0,2}):)?(:<m>[0-9]{0,2}):)?(:<s>[0-9]{0,2})(:<ms>\.[0-9]*)?$/
 

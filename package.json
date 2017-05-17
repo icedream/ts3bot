@@ -1,10 +1,10 @@
 {
   "name": "ts3bot",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Allows running TeamSpeak3 as a bot for all kinds of media (local music/videos/streams/YouTube/...) without the need for a real GUI to exist.",
-  "main": "app.js",
+  "main": "dist/node7/index.js",
   "bin": {
-    "ts3bot": "app.js"
+    "ts3bot": "dist/node7/index.js"
   },
   "keywords": [
     "teamspeak",
@@ -20,15 +20,22 @@
     "media",
     "musicbot"
   ],
-  "author": "Carl Kittelberger <icedream2k9@die-optimisten.net>",
+  "scripts": {
+    "iced2es": "iced3 -I none -b --no-header -o src.js -c src && lebab -t let,multi-var,for-each,arg-rest,arg-spread,obj-method,obj-shorthand,no-strict,exponent,template,default-param,includes,class --replace src.js",
+    "es2017-node7": "babel src.js --presets es2017-node7 --source-maps --out-dir ./dist/node7",
+    "build": "npm run iced2es && npm run es2017-node7",
+    "prepublish": "npm run build",
+    "start": "node .",
+    "start-coffee": "node ./src/index.js"
+  },
+  "author": "Carl Kittelberger <icedream@icedream.pw>",
   "license": "GPL-3.0+",
   "repository": {
     "type": "git",
-    "url": "https://github.com/icedream/ts3bot-control.git"
+    "url": "https://github.com/icedream/ts3bot.git"
   },
   "dependencies": {
     "express": "^4.13.3",
-    "iced-coffee-script": "^108.0.8",
     "merge": "^1.2.0",
     "mkdirp": "^0.5.1",
     "named-regexp": "^0.1.1",
@@ -49,7 +56,17 @@
     "webchimera.js": "^0.2.7",
     "which": "^1.1.2",
     "winston": "^2.3.1",
-    "xvfb": "git://github.com/icedream/node-xvfb.git",
+    "xvfb": "^0.2.3",
     "youtube-dl": "^1.10.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2017-node7": "^0.5.2",
+    "iced-coffee-script-3": "^111.1.1",
+    "lebab": "^2.7.2"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 7.6.0"
   }
 }

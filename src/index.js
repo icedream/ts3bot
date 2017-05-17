@@ -1,6 +1,4 @@
-#!/usr/bin/env node
-
-require("iced-coffee-script/register");
+require("iced-coffee-script-3/register");
 Sync = require("sync");
 
 var services = require("./services");
@@ -19,7 +17,7 @@ if (process.platform === "win32") {
 	});
 }
 
-app = require("./app.iced");
+app = require("./app");
 
 doShutdownAsync = function(cb) {
 	log.info("App shutdown starting...");

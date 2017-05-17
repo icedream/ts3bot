@@ -1,7 +1,7 @@
-nconf = require "nconf"
-path = require "path"
-merge = require "merge"
-pwgen = require "password-generator"
+import nconf from 'nconf'
+import path from 'path'
+import merge from 'merge'
+import pwgen from 'password-generator'
 
 console.log "Loading configuration..."
 

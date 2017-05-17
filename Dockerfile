@@ -1,4 +1,4 @@
-FROM node:6.3.1
+FROM node:7.10.0
 
 ARG TS3CLIENT_VERSION=3.0.19.4
 

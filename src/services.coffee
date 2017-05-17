@@ -1,12 +1,16 @@
 # At this point I feel like I'm writing my own init system. Phew...
 
-merge = require "merge"
-getLogger = require("./logger")
-EventEmitter = require("events").EventEmitter
-log = getLogger("ServiceMgr")
-Sync = require "sync"
+import merge from 'merge'
+import { EventEmitter } from 'events'
+import Sync from 'sync'
 
-getLegacyServiceName = (serviceName) -> serviceName.toLowerCase().replace(/[^A-z0-9]/g, "_")
+import getLogger from './logger'
+import { Service } from './service_template'
+
+log = getLogger("ServiceMgr")
+
+getLegacyServiceName = (serviceName) ->
+	serviceName.toLowerCase().replace(/[^A-z0-9]/g, "_")
 
 module.exports =
 	services: []
@@ -52,7 +56,7 @@ module.exports =
 	shutdownSync: () -> Sync () => @shutdown.sync @
 
 # base class for all services
-module.exports.Service = require "./service_template"
+module.exports.Service = Service
 
 # register services
 services = [
