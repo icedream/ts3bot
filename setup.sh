@@ -38,13 +38,14 @@ ln -sf /config ~app/.ts3bot
 (
 	cd ~app/ts3bot
 	npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" \
-		yarn global add --prod --check-files --verbose file:$(pwd)
+		yarn install --check-files --verbose
+	yarn global add --prod --check-files "file:$(pwd)"
+
+	# Copy over configuration for daemons
+	cp -a etc/* /etc/
 )
 
 # Clean up APT
 apt-get autoremove -y --purge
 apt-get clean
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Copy over configuration for daemons
-cp -a etc/* /etc/
+rm -rf ~app/ts3bot /var/lib/apt/lists/* /tmp/* /var/tmp/*
