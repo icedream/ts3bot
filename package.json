@@ -35,6 +35,12 @@
     "type": "git",
     "url": "https://github.com/icedream/ts3bot.git"
   },
+  "files": [
+    "dist",
+    "README.md",
+		"COPYING.txt",
+		"LICENSE.txt"
+  ],
   "dependencies": {
     "express": "^4.13.3",
     "merge": "^1.2.0",
