@@ -1,0 +1,6 @@
+{
+  "identity-path": "/config/t-id.ini",
+  "ts3-server": "ts3server://127.0.0.1",
+  "disable-file-logging": true,
+  "console-log-level": "debug"
+}
