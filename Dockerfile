@@ -1,6 +1,6 @@
-FROM node:7.10.0
+FROM node:8
 
-ARG TS3CLIENT_VERSION=3.0.19.4
+ARG TS3CLIENT_VERSION=3.1.8
 
 # Add "app" user
 RUN mkdir -p /tmp/empty &&\
