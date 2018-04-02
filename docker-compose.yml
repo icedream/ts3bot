@@ -4,5 +4,6 @@ services:
   bot:
     build: .
     tty: true
+    network_mode: host
     volumes:
       - ./testconfig:/config:ro

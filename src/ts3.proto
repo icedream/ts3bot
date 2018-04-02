@@ -1,0 +1,40 @@
+message ProtobufItem {
+	string uuid = 2;
+	int int1 = 4;
+	string uuid2 = 5; // defaults to "ffffffff-ffff-ffff-ffff-ffffffffffff"
+	int int2 = 6;
+	bytes unknown1 = 7;
+	bytes unknown2 = 8;
+	int timestamp = 9;
+
+	oneof data {
+		// Bookmark = 16;
+		Unknown1 = 21;
+	}
+	
+	// message Bookmark {
+	// 	string name = 1;
+	// 	string address = 2;
+	// 	int port = 3;
+	// 	bytes unknown1 = 4;
+	// 	bytes unknown2 = 5;
+	// 	bytes unknown3 = 6;
+	// 	bytes unknown4 = 7;
+	// 	bytes unknown5 = 8;
+	// 	bytes unknown6 = 9;
+	// 	int unknown7 = 10;
+	// 	string unknownProfile1 = 11;
+	// 	string unknownProfile2 = 12;
+	// 	string unknownUuid = 13;
+	// 	int unknown8 = 14;
+	// 	bytes unknown9 = 15;
+	// 	bytes unknown10 = 17;
+	// 	int unknown11 = 18;
+	// 	int unknown12 = 19;
+	// }
+	
+	message Unknown1 {
+		int unknown1 = 1;
+		int unknown2 = 3;
+	}
+}

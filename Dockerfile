@@ -1,7 +1,6 @@
 FROM node:6.1.0
 
 ENV TS3CLIENT_VERSION 3.1.8
-ENV TS3BOT_COMMIT 4ab1de5a5e5f969982b114713cac35265fda6ef0
 
 # Add "app" user
 RUN mkdir -p /tmp/empty &&\
@@ -9,6 +8,7 @@ RUN mkdir -p /tmp/empty &&\
 	useradd -d /home/app -l -N -g app -m -k /tmp/empty -u 9999 app &&\
 	rmdir /tmp/empty
 
+COPY src/ /home/app/ts3bot/
 ADD setup.sh /
 RUN sh /setup.sh
 

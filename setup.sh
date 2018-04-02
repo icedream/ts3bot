@@ -10,10 +10,10 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y --no-install-recommends \
 	ca-certificates \
-	blackbox xvfb xdotool \
+	blackbox xserver-xorg-core xserver-xorg-video-dummy xdotool \
 	pulseaudio pulseaudio-utils \
 	cmake python-minimal \
-	libnss3 libxcursor1 libxcomposite1 \
+	libnss3 libxcursor1 libxcomposite1 xorg \
 	vlc-nox '^libvlc[0-9]+$' libvlc-dev vlc-plugin-pulse
 
 # Configure GUI user, we are going to use the pre-setup "app" user for this
@@ -28,11 +28,11 @@ wget http://dl.4players.de/ts/releases/${TS3CLIENT_VERSION}/TeamSpeak3-Client-li
 chmod +x ./ts3client.run
 sed -i 's/^MS_PrintLicense$/#MS_PrintLicense/g' ./ts3client.run
 ./ts3client.run --quiet --target ts3client
-rm ./ts3client.run
+rm -r ./ts3client.run ts3client/html/myteamspeak_intro
 
 # Install TS3Bot via Git
 npm_config_wcjs_runtime="node" npm_config_wcjs_runtime_version="$(node --version | tr -d 'v')" \
-	npm install --unsafe-perm -g "https://github.com/icedream/ts3bot-control#${TS3BOT_COMMIT}"
+	npm install --unsafe-perm -g "/home/app/ts3bot/"
 
 # Fix for youtube-dl
 chmod a+rx "$(dirname "$(readlink -f "$(which ts3bot)")")/node_modules/youtube-dl/bin/youtube-dl"
